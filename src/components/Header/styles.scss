@@ -1,0 +1,36 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--dark-bg);
+  color: white;
+  font-weight: bold;
+  padding: 0 10px;
+
+  .header-left {
+    cursor: pointer;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    h1 {
+      font-family: var(--base-font-family);
+      font-weight: 300;
+    }
+  }
+
+  .shopping-cart {
+    cursor: pointer;
+  }
+
+  .header-right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    h2,
+    button {
+      margin: 0 10px;
+      cursor: pointer;
+    }
+  }
+}
