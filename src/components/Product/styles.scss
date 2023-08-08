@@ -43,7 +43,7 @@
 .product {
   background-color: #ffffff;
   width: 22%;
-  margin: 20px auto;
+  margin: 20px;
   border-radius: 20px;
   transition: all 0.5s ease-in-out;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
@@ -53,8 +53,8 @@
 
 .product-next {
   background-color: #ffffff;
-  width: 22%;
-  margin: 20px auto;
+  width: 40%;
+  margin: 20px;
   border-radius: 20px;
   transition: all 0.7s ease-in-out;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
@@ -161,6 +161,7 @@
   }
 
   .product-next {
-    width: 100%;
+    width: 95%;
+    margin: 5px;
   }
 }

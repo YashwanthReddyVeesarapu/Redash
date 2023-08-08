@@ -13,12 +13,17 @@ import Link from "@mui/material/Link";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import AddressForm from "../components/Forms/AddressForm";
-import { Elements } from "@stripe/react-stripe-js";
+import {
+  AddressElement,
+  Elements,
+  useElements,
+  useStripe,
+} from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useEffect, useState } from "react";
 import { apiInstance } from "../utils/apiInstance";
 import CheckoutForm from "../components/Forms/CheckoutForm";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import MainLayout from "../layouts/MainLayout";
 import Review from "../components/Review";
@@ -29,6 +34,12 @@ import ListItemText from "@mui/material/ListItemText";
 import Grid from "@mui/material/Grid";
 
 import "./styles.scss";
+import AddressForm2 from "../components/Forms/AddressForm2";
+import { CircularProgress } from "@mui/material";
+import ContactForm from "../components/Forms/ContactForm";
+import { getAuth } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
+import { updateCheckoutDetails } from "../redux/actions";
 
 // const products = [
 //   {
@@ -67,7 +78,7 @@ function Copyright() {
   );
 }
 
-const steps = ["Shipping address", "Payment details"];
+const steps = ["Contact Info", "Shipping address", "Payment details"];
 
 const addresses = ["1 MUI Drive", "Reactville", "Anytown", "99999", "USA"];
 
@@ -76,13 +87,35 @@ const defaultTheme = createTheme();
 
 export default function CheckoutPage() {
   const { products, total } = useSelector((state) => state.cart);
-  const [activeStep, setActiveStep] = useState(0);
+  const checkout = useSelector((state) => state.checkout);
 
-  const [stripePromise, setStripePromise] = useState(null);
-  const [clientSecret, setClientSecret] = useState();
-  const [shippingExists, setShippingExists] = useState(true);
+  let s = parseInt(new URLSearchParams(window.location.search).get("s"));
 
-  const [loading, setLoading] = useState(true);
+  const [activeStep, setActiveStep] = useState(s ? s : 0);
+
+  const [stripePromise, setStripePromise] = useState("");
+  const [clientSecret, setClientSecret] = useState("");
+  const [shippingAddress, setShippingAddress] = useState({});
+  const [contactInfo, setContactInfo] = useState({});
+  const [message, setMessage] = useState(null);
+  const [paymentInfo, setPaymentInfo] = useState(null);
+
+  const auth = getAuth();
+
+  const [shp, setShp] = useState(false);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  if (s == 2 && message == "Payment succeeded!") {
+    navigate("/checkout/success", {
+      state: {
+        severity: "success",
+        message: message,
+        paymentInfo: paymentInfo,
+      },
+    });
+  }
 
   const handleNext = () => {
     setActiveStep(activeStep + 1);
@@ -108,21 +141,55 @@ export default function CheckoutPage() {
         const { clientSecret } = res.data;
 
         setClientSecret(clientSecret);
-        setLoading(false);
       });
   }, []);
+  useEffect(() => {
+    if (auth.currentUser) {
+      setContactInfo({
+        name: auth.currentUser.displayName,
+        email: auth.currentUser.email,
+        phone: auth.currentUser.phoneNumber,
+      });
+    }
+  }, [auth.currentUser]);
 
   function getStepContent(step) {
     switch (step) {
       case 0:
-        return <AddressForm />;
+        return (
+          <ContactForm
+            setContactInfo={setContactInfo}
+            contactInfo={contactInfo}
+          />
+        );
       case 1:
         return (
           <Elements
             stripe={stripePromise}
             options={{ clientSecret: clientSecret }}
           >
-            <CheckoutForm />
+            <AddressForm2
+              shippingAddress={shippingAddress}
+              setShippingAddress={setShippingAddress}
+            />
+          </Elements>
+
+          // <AddressForm
+          //   shippingAddress={shippingAddress}
+          //   setShippingAddress={setShippingAddress}
+          // />
+        );
+      case 2:
+        return (
+          <Elements
+            stripe={stripePromise}
+            options={{ clientSecret: clientSecret }}
+          >
+            <CheckoutForm
+              message={message}
+              setMessage={setMessage}
+              setPaymentInfo={setPaymentInfo}
+            />
           </Elements>
         );
       // case 2:
@@ -132,22 +199,45 @@ export default function CheckoutPage() {
     }
   }
 
+  useEffect(() => {
+    try {
+      checkString(shippingAddress?.name);
+      checkString(shippingAddress?.line1);
+      checkString(shippingAddress?.city);
+      checkString(shippingAddress?.state);
+      checkString(shippingAddress?.postal_code);
+
+      setShp(true);
+    } catch (error) {}
+  }, [shippingAddress]);
+
+  function checkString(str) {
+    if (!str) throw "Err";
+    str = str.trim();
+    if (str.length < 2) throw "Err";
+  }
+
+  if (!clientSecret || !stripePromise)
+    return (
+      <MainLayout>
+        <CircularProgress style={{ color: "white" }} />
+      </MainLayout>
+    );
+
   return (
     <ThemeProvider theme={defaultTheme}>
       <MainLayout>
         <div className="checkout">
           <div className="checkout-summary">
-            <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+            <Container maxWidth="sm" sx={{ mb: 4 }}>
               <Paper
                 variant="outlined"
                 sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
               >
-                <Typography component="h1" variant="h4" align="center">
-                  Order summary
-                </Typography>
+                <h2 align="center">Order summary</h2>
                 <List disablePadding>
-                  {products.map((product) => (
-                    <ListItem key={product.name} sx={{ py: 1, px: 0 }}>
+                  {checkout.orderItems.map((product, i) => (
+                    <ListItem key={i} sx={{ py: 1, px: 0 }}>
                       <ListItemText
                         primary={product.name}
                         secondary={`${product.size.toUpperCase()} | Quantity: ${
@@ -160,8 +250,11 @@ export default function CheckoutPage() {
 
                   <ListItem sx={{ py: 1, px: 0 }}>
                     <ListItemText primary="Total" />
-                    <Typography variant="subtitle1" sx={{ fontWeight: 700 }}>
-                      {total}
+                    <Typography
+                      variant="h2"
+                      sx={{ fontSize: 20, fontWeight: 700 }}
+                    >
+                      ${total}
                     </Typography>
                   </ListItem>
                 </List>
@@ -169,18 +262,28 @@ export default function CheckoutPage() {
             </Container>
           </div>
 
-          {shippingExists && activeStep == 1 && (
+          {checkout.shipping != undefined && activeStep == 2 && (
             <div className="checkout-shipping">
               <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
                 <Paper
                   variant="outlined"
                   sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
                 >
-                  <Typography variant="h6" gutterBottom sx={{ mt: 2 }}>
-                    Shipping
+                  <h3>Shipping</h3>
+                  <Typography gutterBottom>{checkout.shipping.name}</Typography>
+                  <Typography gutterBottom>
+                    {checkout.shipping.line1}
+                    {", "}
+                    {checkout.shipping.line2 && checkout.shipping.line2}
+                    <br />
+                    {checkout.shipping.city}
+                    {", "}
+                    {checkout.shipping.state}
+                    {", "}
+                    {checkout.shipping.postal_code}
                   </Typography>
-                  <Typography gutterBottom>John Smith</Typography>
-                  <Typography gutterBottom>{addresses.join(", ")}</Typography>
+
+                  <sub>Free</sub>
                 </Paper>
               </Container>
             </div>
@@ -192,9 +295,7 @@ export default function CheckoutPage() {
                 variant="outlined"
                 sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}
               >
-                <Typography component="h1" variant="h4" align="center">
-                  Checkout
-                </Typography>
+                <h2 align="center">Checkout</h2>
                 <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
                   {steps.map((label) => (
                     <Step key={label}>
@@ -226,8 +327,34 @@ export default function CheckoutPage() {
                       {activeStep === 0 && (
                         <Button
                           variant="contained"
-                          onClick={handleNext}
+                          onClick={() => {
+                            dispatch(
+                              updateCheckoutDetails({
+                                contact: contactInfo,
+                              })
+                            );
+                            handleNext();
+                          }}
                           sx={{ mt: 3, ml: 1 }}
+                          disabled={!contactInfo}
+                        >
+                          Next
+                        </Button>
+                      )}
+
+                      {activeStep === 1 && (
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            dispatch(
+                              updateCheckoutDetails({
+                                shipping: shippingAddress,
+                              })
+                            );
+                            handleNext();
+                          }}
+                          sx={{ mt: 3, ml: 1 }}
+                          disabled={!shp}
                         >
                           Next
                         </Button>

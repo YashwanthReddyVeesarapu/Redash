@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { apiInstance } from "../utils/apiInstance";
 import { CircularProgress, LinearProgress } from "@mui/material";
 
-const ShopPage = () => {
+const ShopPage = ({ setOpen }) => {
   const [products, setProducts] = useState([]);
 
   const [pagenum, setPagnum] = useState(1);
@@ -24,21 +24,28 @@ const ShopPage = () => {
 
   if (loading)
     return (
-      <MainLayout>
-        <CircularProgress />
+      <MainLayout setOpen={setOpen}>
+        <CircularProgress style={{ color: "white" }} />
       </MainLayout>
     );
 
   return (
-    <MainLayout page={"shop"}>
-      {Array.isArray(products) && products.length > 0 ? (
-        products.map((p, i) => <Product {...p} key={i} />)
-      ) : (
-        <>
-          <p>Something went wrong, Sorry for the inconvinence.</p>
-          <p>This issue has been reported</p>
-        </>
-      )}
+    <MainLayout setOpen={setOpen} page={"shop"}>
+      <div className="shop-layout">
+        <div className="lines">
+          <div className="line"></div>
+          <div className="line"></div>
+          <div className="line"></div>
+        </div>
+        {Array.isArray(products) && products.length > 0 ? (
+          products.map((p, i) => <Product {...p} key={i} />)
+        ) : (
+          <>
+            <p>Something went wrong, Sorry for the inconvinence.</p>
+            <p>This issue has been reported</p>
+          </>
+        )}
+      </div>
     </MainLayout>
   );
 };

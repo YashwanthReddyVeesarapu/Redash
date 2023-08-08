@@ -13,6 +13,9 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/actions";
 
+import "./styles.scss";
+import CustomButton from "../components/CustomButton";
+
 const ProductPage = () => {
   const [product, setProduct] = useState();
   const [loading, setLoading] = useState(true);
@@ -58,69 +61,252 @@ const ProductPage = () => {
   return (
     <MainLayout>
       {loading ? (
-        <CircularProgress />
+        <CircularProgress style={{ color: "white" }} />
       ) : (
-        <>
-          <h2>{product.name}</h2>
-          <p>{product.about}</p>
+        <div
+          className="product-layout"
+          itemType="https://schema.org/Product"
+          itemScope
+        >
+          <meta itemProp="sku" content={product._id} />
 
           <img className="img-container" src={image} />
+          <meta
+            itemProp="image"
+            content={`https://api.redash.us/images/${product._id}`}
+          />
 
-          <FormGroup>
-            <InputLabel id="clr-label">Color</InputLabel>
-            <Select
-              id="clr"
-              labelId="clr-label"
-              label="Color"
-              value={clr}
-              onChange={(e) => setClr(e.target.value)}
+          <div className="product-details">
+            <h2>{product.name}</h2>
+            <meta itemprop="name" content={product.name} />
+
+            <h3 className="price">${product.price}</h3>
+            <meta itemprop="price" content={product.price} />
+            <meta itemprop="priceCurrency" content="USD" />
+            <link itemprop="url" href={window.location.href} />
+            <meta
+              itemprop="itemCondition"
+              content="https://schema.org/NewCondition"
+            />
+            <meta
+              itemprop="availability"
+              content="https://schema.org/InStock"
+            />
+
+            <meta itemProp="description" content={product.about} />
+            <p>{product.about}</p>
+            <meta
+              itemprop="brand"
+              itemType="https://schema.org/Brand"
+              content={product.brand}
+            />
+
+            <div
+              itemProp="offers"
+              itemType="https://schema.org/Offer"
+              itemScope
             >
-              {product.colors.map((c, i) => (
-                <MenuItem key={i} value={c}>
-                  {c}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormGroup>
+              <link itemprop="url" href={window.location.href} />
+              <meta
+                itemprop="itemCondition"
+                content="https://schema.org/NewCondition"
+              />
+              <meta
+                itemprop="availability"
+                content="https://schema.org/InStock"
+              />
+              <meta itemprop="price" content={product.price} />
+              <meta itemprop="priceCurrency" content="USD" />
+            </div>
 
-          <FormGroup>
-            <InputLabel id="size-label">Size</InputLabel>
-            <Select
-              id="size"
-              labelId="size-label"
-              label="Size"
-              value={size}
-              onChange={(e) => setSize(e.target.value)}
+            <div
+              itemProp="shippingDetails"
+              itemType="https://schema.org/OfferShippingDetails"
+              itemScope
             >
-              {product.sizes.map((c, i) => (
-                <MenuItem key={i} value={c}>
-                  {c}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormGroup>
+              <div
+                itemProp="shippingRate"
+                itemType="https://schema.org/MonetaryAmount"
+                itemScope
+              >
+                <meta itemprop="value" content="0" />
+                <meta itemprop="currency" content="USD" />
+              </div>
+              <div
+                itemprop="shippingDestination"
+                itemtype="https://schema.org/DefinedRegion"
+                itemscope
+              >
+                <meta itemprop="addressCountry" content="US" />
+              </div>
 
-          <Button
-            disabled={isAlreadyInCart()}
-            onClick={() => {
-              const cartItem = {
-                _id: product._id,
-                name: product.name,
-                quantity: qty,
-                color: clr,
-                price: product.price,
-                size: size,
-                brand: product.brand,
-                img: image,
-              };
-              dispatch(addToCart(cartItem));
-            }}
-          >
-            {isAlreadyInCart()
-              ? "Product is already in your cart"
-              : " ADD TO CART"}
-          </Button>
-        </>
+              <div
+                itemprop="deliveryTime"
+                itemtype="https://schema.org/ShippingDeliveryTime"
+                itemscope
+              >
+                <div
+                  itemprop="handlingTime"
+                  itemtype="https://schema.org/QuantitativeValue"
+                  itemscope
+                >
+                  <meta itemprop="minValue" content="0" />
+                  <meta itemprop="maxValue" content="1" />
+                  <meta itemprop="unitCode" content="DAY" />
+                </div>
+                <div
+                  itemprop="transitTime"
+                  itemtype="https://schema.org/QuantitativeValue"
+                  itemscope
+                >
+                  <meta itemprop="minValue" content="1" />
+                  <meta itemprop="maxValue" content="5" />
+                  <meta itemprop="unitCode" content="DAY" />
+                </div>
+              </div>
+
+              <div
+                itemprop="hasMerchantReturnPolicy"
+                itemtype="https://schema.org/MerchantReturnPolicy"
+                itemscope
+              >
+                <meta itemprop="applicableCountry" content="US" />
+                <meta
+                  itemprop="returnPolicyCategory"
+                  content="https://schema.org/MerchantReturnFiniteReturnWindow"
+                />
+                <meta itemprop="merchantReturnDays" content="15" />
+                <meta
+                  itemprop="returnMethod"
+                  content="https://schema.org/ReturnByMail"
+                />
+                <meta
+                  itemprop="returnFees"
+                  content="https://schema.org/FreeReturn"
+                />
+              </div>
+            </div>
+
+            {/* <FormGroup>
+              <InputLabel id="clr-label">Color</InputLabel>
+              <Select
+                id="clr"
+                labelId="clr-label"
+                label="Color"
+                value={clr}
+                onChange={(e) => setClr(e.target.value)}
+              >
+                {product.colors.map((c, i) => (
+                  <MenuItem key={i} value={c}>
+                    {c}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormGroup> */}
+
+            <div className="productColours">
+              {product.colors.map((a, i) => {
+                if (a === "white")
+                  return (
+                    <div
+                      className={
+                        clr === a ? "colourChildActive" : "colourChild"
+                      }
+                      key={i}
+                      style={{ backgroundColor: "white" }}
+                      onClick={() => setClr("white")}
+                    />
+                  );
+                if (a === "black")
+                  return (
+                    <div
+                      className={
+                        clr === a ? "colourChildActive" : "colourChild"
+                      }
+                      key={i}
+                      style={{ backgroundColor: "black" }}
+                      onClick={() => setClr("black")}
+                    />
+                  );
+
+                if (a === "coffee brown")
+                  return (
+                    <div
+                      className={
+                        clr === a ? "colourChildActive" : "colourChild"
+                      }
+                      key={i}
+                      style={{ backgroundColor: "#914A37" }}
+                      onClick={() => setClr("coffee brown")}
+                    />
+                  );
+                if (a === "lavender")
+                  return (
+                    <div
+                      className={
+                        clr === a ? "colourChildActive" : "colourChild"
+                      }
+                      key={i}
+                      style={{ backgroundColor: "#E6E6FA" }}
+                      onClick={() => setClr("lavender")}
+                    />
+                  );
+                if (a === "light baby pink")
+                  return (
+                    <div
+                      className={
+                        clr === a ? "colourChildActive" : "colourChild"
+                      }
+                      key={i}
+                      style={{ backgroundColor: "#f4C2C2" }}
+                      onClick={() => setClr("light baby pink")}
+                    />
+                  );
+              })}
+            </div>
+
+            <FormGroup className="p-size">
+              <InputLabel id="size-label">Size</InputLabel>
+              <Select
+                id="size"
+                labelId="size-label"
+                value={size}
+                onChange={(e) => setSize(e.target.value)}
+              >
+                {product.sizes.map((c, i) => (
+                  <MenuItem key={i} value={c}>
+                    {c.toUpperCase()}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormGroup>
+
+            <CustomButton
+              style={{
+                color: isAlreadyInCart() ? "gray" : "white",
+                backgroundColor: isAlreadyInCart() ? "white" : "black",
+              }}
+              onClick={() => {
+                const cartItem = {
+                  _id: product._id,
+                  name: product.name,
+                  quantity: qty,
+                  color: clr,
+                  price: product.price,
+                  size: size,
+                  brand: product.brand,
+                  img: image,
+                };
+                if (isAlreadyInCart()) {
+                  return alert("Product is already in your cart");
+                }
+                dispatch(addToCart(cartItem));
+              }}
+            >
+              ADD TO CART
+            </CustomButton>
+          </div>
+        </div>
       )}
     </MainLayout>
   );

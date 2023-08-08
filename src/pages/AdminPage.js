@@ -11,26 +11,36 @@ import {
   FormControl,
 } from "@mui/material";
 import { apiInstance } from "../utils/apiInstance";
-import { resolve } from "styled-jsx/css";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
   const [images, setImages] = useState();
   const [imagesUrlArray, setImagesUrlArray] = useState([]);
+  const auth = getAuth();
+  const navigate = useNavigate();
 
   const [finalImages, setFinalImages] = useState({});
   const [colors, setColors] = useState("");
   const [sizes, setSizes] = useState(["xs", "s", "m", "l", "xl"]);
   const [gender, setGender] = useState("female");
 
+  const [loading, setLoading] = useState(true);
+
+  // onAuthStateChanged(auth, (user) => {
+  //   setLoading(false);
+  //   if (auth.currentUser?.email !== "hello@redash.us") {
+  //     navigate("/");
+  //   }
+  // });
+
   async function getBase64(file) {
-    console.log(file);
     let reader = new FileReader();
 
     return new Promise((resolve, reject) => {
       if (file.type == "image/webp") {
         reader.readAsDataURL(file);
         reader.onload = () => resolve(reader.result);
-        console.log("ISWDWD");
       } else {
         let url = URL.createObjectURL(file);
         const newImg = new Image();
@@ -55,6 +65,7 @@ const AdminPage = () => {
               reader.onload = function () {
                 let img = reader.result;
                 resolve(img);
+                console.log(img);
               };
             },
             "image/webp",
@@ -74,7 +85,6 @@ const AdminPage = () => {
       alert("Max file size is 16mb");
     } else {
       finalImages[key] = await getBase64(file);
-      console.log(finalImages[key]);
     }
   }
 
@@ -100,8 +110,6 @@ const AdminPage = () => {
       gender: gender,
     };
 
-    console.log(productData);
-
     apiInstance.post("/products", productData);
   };
 
@@ -117,7 +125,7 @@ const AdminPage = () => {
 
   return (
     <AdminLayout>
-      <div>
+      <div className="admin">
         <h2>Create New Product</h2>
         <form onSubmit={createNewProduct} className="newProductForm">
           <Input name="name" placeholder="Name" />

@@ -1,10 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import "./styles.scss";
-import { ShoppingBasket, ShoppingCart } from "@mui/icons-material";
+import {
+  AccountCircle,
+  Login,
+  Person,
+  ShoppingBasket,
+  ShoppingCart,
+} from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { Badge, IconButton, styled } from "@mui/material";
 import { useSelector } from "react-redux";
 import logo from "./../../assets/Logo.png";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -16,27 +23,49 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 
 const Header = ({ page }) => {
-  console.log(page);
   const { cart } = useSelector((state) => state);
+  const auth = getAuth();
   const navigate = useNavigate();
+
   return (
     <header>
       <div className="header-left" onClick={() => navigate("/")}>
         {/* <img height={"40px"} width={"100%"} src={logo} /> */}
-        <h1>redash</h1>
+        <h1>Redash</h1>
       </div>
 
       <div className="header-right">
         {page == "home" && (
-          <div onClick={() => navigate("/shop")}>
+          <div onClick={() => navigate("/")}>
             <h2>Shop</h2>
           </div>
         )}
-        <IconButton aria-label="cart" onClick={() => navigate("/cart")}>
-          <StyledBadge badgeContent={cart.products.length} color="secondary">
-            <ShoppingCart style={{ color: "white" }} />
-          </StyledBadge>
-        </IconButton>
+
+        {page != "home" && (
+          <div onClick={() => navigate("/about")}>
+            <h2>About</h2>
+          </div>
+        )}
+
+        {auth.currentUser
+          ? page !== "profile" && (
+              <IconButton onClick={() => navigate("/profile")}>
+                <Person style={{ color: "white", fontSize: "30px" }} />
+              </IconButton>
+            )
+          : page !== "login" &&
+            page !== "loading" && (
+              <IconButton onClick={() => navigate("/login")}>
+                <Login style={{ color: "white" }} />
+              </IconButton>
+            )}
+        {page !== "prelaunch" && (
+          <IconButton aria-label="cart" onClick={() => navigate("/cart")}>
+            <StyledBadge badgeContent={cart.products.length} color="secondary">
+              <ShoppingCart style={{ color: "white" }} />
+            </StyledBadge>
+          </IconButton>
+        )}
       </div>
     </header>
   );

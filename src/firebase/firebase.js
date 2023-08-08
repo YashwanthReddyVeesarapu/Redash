@@ -3,13 +3,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyD4xMpTdre6fbXFyA4JSELC-n3YWQj7Iks",
-  authDomain: "rediva-life.firebaseapp.com",
-  projectId: "rediva-life",
-  storageBucket: "rediva-life.appspot.com",
-  messagingSenderId: "826782069743",
-  appId: "1:826782069743:web:c1893d36fdad49e4ccbc1a",
-  measurementId: "G-HVTFF4TYML",
+  apiKey: "AIzaSyDLk3ls_0Jo673TrDy5JrOmxTLikUu2OyE",
+  authDomain: "redashnyc.firebaseapp.com",
+  projectId: "redashnyc",
+  storageBucket: "redashnyc.appspot.com",
+  messagingSenderId: "747288470358",
+  appId: "1:747288470358:web:af2fed6757e217206b2cf7",
+  measurementId: "G-BDRY1MY115",
 };
 
 export const app = initializeApp(firebaseConfig);

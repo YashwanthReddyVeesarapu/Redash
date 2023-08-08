@@ -1,13 +1,47 @@
-import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import React, { useEffect, useState } from "react";
 
-export default function AddressForm() {
+export default function AddressForm({ shippingAddress, setShippingAddress }) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address1, setAddress1] = useState("");
+  const [address2, setAddress2] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [zip, setZip] = useState("");
+
+  useEffect(() => {
+    if (shippingAddress.firstName !== undefined) {
+      setFirstName(shippingAddress.firstName);
+      setLastName(shippingAddress.lastName);
+      setAddress1(shippingAddress.address1);
+      setAddress2(shippingAddress.address2);
+      setCity(shippingAddress.city);
+      setState(shippingAddress.state);
+      setZip(shippingAddress.zip);
+    }
+  }, []);
+
+  useEffect(() => {
+    setShippingAddress({
+      firstName,
+      lastName,
+      address1,
+      address2,
+      city,
+      state,
+      zip,
+    });
+  }, [firstName, lastName, address1, address2, city, state, zip]);
+
+  console.log(shippingAddress);
+
   return (
-    <React.Fragment>
+    <>
       {/* <Typography variant="h6" gutterBottom>
         Shipping address
       </Typography> */}
@@ -21,6 +55,8 @@ export default function AddressForm() {
             fullWidth
             autoComplete="given-name"
             variant="standard"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -32,6 +68,8 @@ export default function AddressForm() {
             fullWidth
             autoComplete="family-name"
             variant="standard"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -43,6 +81,8 @@ export default function AddressForm() {
             fullWidth
             autoComplete="shipping address-line1"
             variant="standard"
+            value={address1}
+            onChange={(e) => setAddress1(e.target.value)}
           />
         </Grid>
         <Grid item xs={12}>
@@ -53,6 +93,8 @@ export default function AddressForm() {
             fullWidth
             autoComplete="shipping address-line2"
             variant="standard"
+            value={address2}
+            onChange={(e) => setAddress2(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -63,7 +105,9 @@ export default function AddressForm() {
             label="City"
             fullWidth
             autoComplete="shipping address-level2"
+            value={city}
             variant="standard"
+            onChange={(e) => setCity(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -73,6 +117,8 @@ export default function AddressForm() {
             label="State/Province/Region"
             fullWidth
             variant="standard"
+            value={state}
+            onChange={(e) => setState(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -84,6 +130,8 @@ export default function AddressForm() {
             fullWidth
             autoComplete="shipping postal-code"
             variant="standard"
+            value={zip}
+            onChange={(e) => setZip(e.target.value)}
           />
         </Grid>
         <Grid item xs={12} sm={6}>
@@ -95,6 +143,7 @@ export default function AddressForm() {
             fullWidth
             autoComplete="shipping country"
             variant="standard"
+            value={"US"}
           />
         </Grid>
         {/* <Grid item xs={12}>
@@ -106,6 +155,6 @@ export default function AddressForm() {
           />
         </Grid> */}
       </Grid>
-    </React.Fragment>
+    </>
   );
 }

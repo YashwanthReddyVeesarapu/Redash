@@ -1,7 +1,8 @@
 import React, { useEffect, useRef, useState } from "react";
 import MainLayout from "../layouts/MainLayout";
 
-import background_tshirt from "../assets/background-tshirt.png";
+import background_tshirt_front from "../assets/background-tshirt.png";
+import background_tshirt_back from "../assets/background-tshirt_back.png";
 
 import { fabric } from "fabric"; // v5
 
@@ -36,7 +37,8 @@ const CustomisePage = () => {
 
   const [image, setImage] = useState("");
 
-  const [dsize, setDSize] = useState(1);
+  const [dsize, setDSize] = useState(3);
+  const [side, setSide] = useState("front");
   const [dimen, setDimen] = useState("");
   const [isbgRemoved, setIsBgRemoved] = useState(false);
   // const [canvas, setCanvas] = useState(null);
@@ -49,6 +51,13 @@ const CustomisePage = () => {
 
   useEffect(() => {
     let canvas = new fabric.Canvas(canvasEl.current);
+    let imageElement = document.getElementById("tshirt-backgroundpicture");
+
+    if (side == "front") {
+      imageElement.src = background_tshirt_front;
+    } else if (side == "back") {
+      imageElement.src = background_tshirt_back;
+    }
 
     // if (!image) {
     //   canvas.clear();
@@ -71,7 +80,7 @@ const CustomisePage = () => {
       // updateCanvasContext(null);
       canvas.dispose();
     };
-  }, [image, dimen]);
+  }, [image, dimen, side]);
 
   useEffect(() => {
     if (dsize == "") return;
@@ -90,9 +99,8 @@ const CustomisePage = () => {
         <div className="section">
           <h2>Getting Started</h2>
 
-          <FormControl>
+          {/* <FormControl style={{ color: "white" }}>
             <InputLabel id="design-size-label">Select Design Size</InputLabel>
-
             <Select
               labelId="design-size-label"
               id="design-size"
@@ -100,11 +108,11 @@ const CustomisePage = () => {
               value={dsize && dsize}
               onChange={(e) => setDSize(e.target.value)}
             >
-              <MenuItem value={1}>Normal </MenuItem>
-              <MenuItem value={2}>Normal (Landscape)</MenuItem>
-              <MenuItem value={3}>Large</MenuItem>
+       <MenuItem value={1}>Normal </MenuItem>
+              <MenuItem value={2}>Normal (Landscape)</MenuItem> 
+              <MenuItem value={3}>Normal</MenuItem>
             </Select>
-          </FormControl>
+          </FormControl> */}
 
           <FormControl>
             <InputLabel id="shirt-color-label">Color</InputLabel>
@@ -129,24 +137,36 @@ const CustomisePage = () => {
         </div>
         <div className="smiddle">
           <div id="tshirt-div">
-            <img id="tshirt-backgroundpicture" src={background_tshirt} />
+            <img id="tshirt-backgroundpicture" />
           </div>
           <canvas
             id="canvas-container"
             width="200"
             height="400"
             ref={canvasEl}
-            style={{ border: "1px solid black" }}
+            style={{ border: "1px solid gray" }}
           ></canvas>
         </div>
         <div className="section">
-          <Input type={"file"} onChange={(e) => setImage(e.target.files[0])} />
-          <Button
+          <Input
+            type={"file"}
+            inputProps={{ accept: "image/png, image/jpg" }}
+            onChange={(e) => setImage(e.target.files[0])}
+          />
+          {/* <Button
             disabled={isbgRemoved}
             variant={"contained"}
             onClick={() => removeBg()}
           >
             Remove background
+          </Button> */}
+
+          <Button
+            disabled={isbgRemoved}
+            variant={"contained"}
+            onClick={() => removeBg()}
+          >
+            I am Done - Add to cart
           </Button>
         </div>
       </div>

@@ -13,7 +13,7 @@ router.get("/:pagenum", async (req, res) => {
     const data = await getAllProducts(pagenum);
     res.status(200).json(data);
   } catch (error) {
-    res.status(error.status).json(error.message);
+    res.status(error.status ? error.status : 500).json(error.message);
   }
 });
 

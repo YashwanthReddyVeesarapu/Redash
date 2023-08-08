@@ -2,6 +2,7 @@ import {
   Navigate,
   Route,
   Routes,
+  useLocation,
   useNavigate,
   useNavigation,
 } from "react-router-dom";
@@ -19,31 +20,37 @@ import AdminPage from "./pages/AdminPage";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
+import PreLaunchPage from "./pages/PreLaunchPage";
+import { Alert, CircularProgress, Snackbar } from "@mui/material";
+import OrderPlacedPage from "./pages/OrderPlacedPage";
+import MainLayout from "./layouts/MainLayout";
 
 function App() {
-  const [user, setUser] = useState(null);
+  const [open, setOpen] = useState({});
   const [loading, setLoading] = useState(true);
 
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     const uid = user.uid;
-  //     setUser(user);
-  //     setLoading(false);
-  //   } else {
-  //     setLoading(false);
-  //     setUser(null);
-  //   }
-  // });
+  onAuthStateChanged(auth, (user) => {
+    setLoading(false);
+  });
 
-  useEffect(() => {
-    setUser(true);
-  }, []);
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen({});
+  };
 
+  if (loading)
+    return (
+      <MainLayout page={"loading"}>
+        <CircularProgress style={{ color: "white" }} />{" "}
+      </MainLayout>
+    );
   return (
     <div className="App">
       <Routes>
         <Route
-          path="/"
+          path="/about"
           element={
             <HomePage />
             // user ? (
@@ -58,18 +65,37 @@ function App() {
             // )
           }
         />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/login" element={<LoginPage setOpen={setOpen} />} />
+        <Route path="/register" element={<RegisterPage setOpen={setOpen} />} />
 
-        <Route path="/customise" element={<CustomisePage />} />
+        <Route path="/custom" element={<CustomisePage />} />
 
-        <Route path="/shop" element={<ShopPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/" element={<ShopPage setOpen={setOpen} />} />
+        <Route path="/profile" element={<ProfilePage setOpen={setOpen} />} />
+        <Route path="/hellobello" element={<AdminPage />} />
         <Route path="/product/:productId" element={<ProductPage />} />
         <Route path="/cart" element={<CartPage />} />
+        <Route
+          path="/checkout/success"
+          element={<OrderPlacedPage setOpen={setOpen} />}
+        />
+
         <Route path="/checkout" element={<CheckoutPage />} />
       </Routes>
+
+      <Snackbar
+        open={open.severity != null}
+        autoHideDuration={3000}
+        onClose={handleClose}
+      >
+        <Alert
+          onClose={handleClose}
+          severity={open.severity}
+          sx={{ width: "100%" }}
+        >
+          {open.message}
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

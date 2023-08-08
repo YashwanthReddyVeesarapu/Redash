@@ -10,16 +10,14 @@ function totalPrice(products) {
   let total = 0;
 
   for (let i = 0; i < products.length; i++) {
-    console.log(products[i]);
     total =
       total + parseInt(products[i].price) * parseInt(products[i].quantity);
-    console.log(total);
   }
   return total;
 }
 
 const cartReducer = (state = initialState, action) => {
-  const { type, payload, payload1 } = action;
+  const { type, payload } = action;
 
   switch (type) {
     case "ADD_TO_CART":
@@ -43,6 +41,11 @@ const cartReducer = (state = initialState, action) => {
       return {
         products: newCartItems,
         total: totalPrice(newCartItems),
+      };
+
+    case "CLEAR_CART":
+      return {
+        ...initialState,
       };
 
     default:

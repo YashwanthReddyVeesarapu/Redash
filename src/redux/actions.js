@@ -12,3 +12,16 @@ export const removeCartItem = (payload) => ({
   type: "REMOVE_ITEM",
   payload: payload,
 });
+
+export const clearCart = () => ({
+  type: "CLEAR_CART",
+});
+
+export const updateCheckoutDetails = (payload) => ({
+  type: "UPDATE_CHECKOUT",
+  payload: payload,
+});
+
+export const clearCheckout = () => ({
+  type: "CLEAR_CHECKOUT",
+});

@@ -2,7 +2,7 @@ import React from "react";
 import MainLayout from "../layouts/MainLayout";
 import { Button, FormGroup, InputLabel, MenuItem, Select } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { changeCartQty } from "../redux/actions";
+import { updateCheckoutDetails } from "../redux/actions";
 
 import "./styles.scss";
 import CartItem from "../components/CartItem";
@@ -15,30 +15,42 @@ const CartPage = () => {
 
   const navigate = useNavigate();
 
-  console.log(products);
   return (
-    <MainLayout>
-      <h2>Cart</h2>
-      {Array.isArray(products) && products.length > 0 ? (
-        <>
-          {products.map((p, i) => (
-            <CartItem p={p} key={i} />
-          ))}
+    <MainLayout page={"cart"}>
+      <div className="cart-layout">
+        <h2>Cart</h2>
+        {Array.isArray(products) && products.length > 0 ? (
+          <>
+            {products.map((p, i) => (
+              <CartItem p={p} key={i} />
+            ))}
 
-          <h4> Subtotal ${total} </h4>
-          <Button variant={"contained"} onClick={() => navigate("/checkout")}>
-            Review + Checkout
-          </Button>
-          <p>Shipping & Taxes Calculated at Checkout</p>
-        </>
-      ) : (
-        <>
-          <p>Your cart looks so empty!!!</p>
-          <Button onClick={() => navigate("/shop")} variant={"contained"}>
-            Shop now
-          </Button>
-        </>
-      )}
+            <h4> Subtotal ${total} </h4>
+            <Button
+              variant={"contained"}
+              onClick={() => {
+                dispatch(
+                  updateCheckoutDetails({
+                    orderItems: products,
+                    total: total,
+                  })
+                );
+                navigate("/checkout");
+              }}
+            >
+              Review + Checkout
+            </Button>
+            <p>Shipping & Taxes Calculated at Checkout</p>
+          </>
+        ) : (
+          <>
+            <p>Your cart looks so empty!!!</p>
+            <Button onClick={() => navigate("/")} variant={"contained"}>
+              Shop now
+            </Button>
+          </>
+        )}
+      </div>
     </MainLayout>
   );
 };

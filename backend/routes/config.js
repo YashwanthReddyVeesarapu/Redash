@@ -3,7 +3,7 @@ import express from "express";
 import Stripe from "stripe";
 
 const stripe = new Stripe(
-  "sk_test_51NIulyITgiS0q6TOcRR2pobOZBNssghlRZh2Gt1Po4vflFO8b1Jx8W0SrQ8pfEhA73DIvzaJqTSf0SWoWP1c7PI700qOIzuUmI"
+  "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"
 );
 const router = express.Router();
 
@@ -20,8 +20,19 @@ router.post("/payment", async (req, res) => {
       amount: amount,
     });
 
+    console.log(intent);
     res.json({ clientSecret: intent.client_secret });
   } catch (error) {}
+});
+
+router.get("/register", async (req, res) => {
+  try {
+    stripe.applePayDomains.create({
+      domain_name: "www.redash.us",
+    });
+  } catch (error) {
+    res.json(error);
+  }
 });
 
 export default router;

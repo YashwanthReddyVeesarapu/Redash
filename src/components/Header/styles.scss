@@ -2,10 +2,10 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: var(--dark-bg);
   color: white;
   font-weight: bold;
   padding: 0 10px;
+  position: sticky;
 
   .header-left {
     cursor: pointer;
@@ -15,6 +15,7 @@ header {
     h1 {
       font-family: var(--base-font-family);
       font-weight: 300;
+      text-transform: lowercase;
     }
   }
 

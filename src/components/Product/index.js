@@ -76,9 +76,7 @@ const Product = (product) => {
         <ul>
           <li>
             {imgsLoaded ? (
-              <Typography variant={"h2"} className="name">
-                {name ? name : "N/A"}
-              </Typography>
+              <h2 className="name">{name ? name : "N/A"}</h2>
             ) : (
               <Skeleton
                 style={{ marginLeft: "25%", marginRight: "25%" }}
