@@ -2,7 +2,7 @@ import express from "express";
 import { constructRoutes } from "./routes/index.js";
 import cors from "cors";
 import bodyParser from "body-parser";
-import "dotenv/config";
+import "dotenv/config.js";
 const port = process.env.PORT || 4000;
 
 const app = express();
