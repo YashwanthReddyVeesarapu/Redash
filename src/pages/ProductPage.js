@@ -78,25 +78,25 @@ const ProductPage = () => {
 
           <div className="product-details">
             <h2>{product.name}</h2>
-            <meta itemprop="name" content={product.name} />
+            <meta itemProp="name" content={product.name} />
 
             <h3 className="price">${product.price}</h3>
-            <meta itemprop="price" content={product.price} />
-            <meta itemprop="priceCurrency" content="USD" />
-            <link itemprop="url" href={window.location.href} />
+            <meta itemProp="price" content={product.price} />
+            <meta itemProp="priceCurrency" content="USD" />
+            <link itemProp="url" href={window.location.href} />
             <meta
-              itemprop="itemCondition"
+              itemProp="itemCondition"
               content="https://schema.org/NewCondition"
             />
             <meta
-              itemprop="availability"
+              itemProp="availability"
               content="https://schema.org/InStock"
             />
 
             <meta itemProp="description" content={product.about} />
             <p>{product.about}</p>
             <meta
-              itemprop="brand"
+              itemProp="brand"
               itemType="https://schema.org/Brand"
               content={product.brand}
             />
@@ -106,17 +106,17 @@ const ProductPage = () => {
               itemType="https://schema.org/Offer"
               itemScope
             >
-              <link itemprop="url" href={window.location.href} />
+              <link itemProp="url" href={window.location.href} />
               <meta
-                itemprop="itemCondition"
+                itemProp="itemCondition"
                 content="https://schema.org/NewCondition"
               />
               <meta
-                itemprop="availability"
+                itemProp="availability"
                 content="https://schema.org/InStock"
               />
-              <meta itemprop="price" content={product.price} />
-              <meta itemprop="priceCurrency" content="USD" />
+              <meta itemProp="price" content={product.price} />
+              <meta itemProp="priceCurrency" content="USD" />
             </div>
 
             <div
@@ -129,59 +129,59 @@ const ProductPage = () => {
                 itemType="https://schema.org/MonetaryAmount"
                 itemScope
               >
-                <meta itemprop="value" content="0" />
-                <meta itemprop="currency" content="USD" />
+                <meta itemProp="value" content="0" />
+                <meta itemProp="currency" content="USD" />
               </div>
               <div
-                itemprop="shippingDestination"
-                itemtype="https://schema.org/DefinedRegion"
-                itemscope
+                itemProp="shippingDestination"
+                itemType="https://schema.org/DefinedRegion"
+                itemScope
               >
-                <meta itemprop="addressCountry" content="US" />
-              </div>
-
-              <div
-                itemprop="deliveryTime"
-                itemtype="https://schema.org/ShippingDeliveryTime"
-                itemscope
-              >
-                <div
-                  itemprop="handlingTime"
-                  itemtype="https://schema.org/QuantitativeValue"
-                  itemscope
-                >
-                  <meta itemprop="minValue" content="0" />
-                  <meta itemprop="maxValue" content="1" />
-                  <meta itemprop="unitCode" content="DAY" />
-                </div>
-                <div
-                  itemprop="transitTime"
-                  itemtype="https://schema.org/QuantitativeValue"
-                  itemscope
-                >
-                  <meta itemprop="minValue" content="1" />
-                  <meta itemprop="maxValue" content="5" />
-                  <meta itemprop="unitCode" content="DAY" />
-                </div>
+                <meta itemProp="addressCountry" content="US" />
               </div>
 
               <div
-                itemprop="hasMerchantReturnPolicy"
-                itemtype="https://schema.org/MerchantReturnPolicy"
-                itemscope
+                itemProp="deliveryTime"
+                itemType="https://schema.org/ShippingDeliveryTime"
+                itemScope
               >
-                <meta itemprop="applicableCountry" content="US" />
+                <div
+                  itemProp="handlingTime"
+                  itemType="https://schema.org/QuantitativeValue"
+                  itemScope
+                >
+                  <meta itemProp="minValue" content="0" />
+                  <meta itemProp="maxValue" content="1" />
+                  <meta itemProp="unitCode" content="DAY" />
+                </div>
+                <div
+                  itemProp="transitTime"
+                  itemType="https://schema.org/QuantitativeValue"
+                  itemScope
+                >
+                  <meta itemProp="minValue" content="1" />
+                  <meta itemProp="maxValue" content="5" />
+                  <meta itemProp="unitCode" content="DAY" />
+                </div>
+              </div>
+
+              <div
+                itemProp="hasMerchantReturnPolicy"
+                itemType="https://schema.org/MerchantReturnPolicy"
+                itemScope
+              >
+                <meta itemProp="applicableCountry" content="US" />
                 <meta
-                  itemprop="returnPolicyCategory"
+                  itemProp="returnPolicyCategory"
                   content="https://schema.org/MerchantReturnFiniteReturnWindow"
                 />
-                <meta itemprop="merchantReturnDays" content="15" />
+                <meta itemProp="merchantReturnDays" content="15" />
                 <meta
-                  itemprop="returnMethod"
+                  itemProp="returnMethod"
                   content="https://schema.org/ReturnByMail"
                 />
                 <meta
-                  itemprop="returnFees"
+                  itemProp="returnFees"
                   content="https://schema.org/FreeReturn"
                 />
               </div>

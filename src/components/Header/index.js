@@ -1,17 +1,11 @@
 import React, { useState } from "react";
 import "./styles.scss";
-import {
-  AccountCircle,
-  Login,
-  Person,
-  ShoppingBasket,
-  ShoppingCart,
-} from "@mui/icons-material";
-import { useNavigate } from "react-router-dom";
-import { Badge, IconButton, styled } from "@mui/material";
+import { Login, Person, Search, ShoppingCart } from "@mui/icons-material";
+import { useLocation, useNavigate } from "react-router-dom";
+import { Badge, IconButton, TextField, styled } from "@mui/material";
 import { useSelector } from "react-redux";
-import logo from "./../../assets/Logo.png";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
+import { useEffect } from "react";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -26,6 +20,25 @@ const Header = ({ page }) => {
   const { cart } = useSelector((state) => state);
   const auth = getAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const params = new URLSearchParams(location.search);
+  const query = params.get("query");
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    console.log(query);
+    if (query == null) setSearchTerm("");
+    else setSearchTerm(query);
+  }, [query]);
+
+  const handleSearch = () => {
+    if (searchTerm == null || searchTerm == "") {
+      navigate("/");
+    } else {
+      navigate(`?query=${searchTerm}`);
+    }
+  };
 
   return (
     <header>
@@ -33,6 +46,21 @@ const Header = ({ page }) => {
         {/* <img height={"40px"} width={"100%"} src={logo} /> */}
         <h1>Redash</h1>
       </div>
+
+      {page == "shop" && (
+        <div className="header-middle">
+          <form>
+            <input
+              placeholder="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <IconButton onClick={() => handleSearch()}>
+              <Search style={{ color: "white", fontSize: "30px" }} />
+            </IconButton>
+          </form>
+        </div>
+      )}
 
       <div className="header-right">
         {page == "home" && (

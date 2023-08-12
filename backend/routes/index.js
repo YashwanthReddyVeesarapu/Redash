@@ -16,6 +16,6 @@ export const constructRoutes = (app) => {
   app.use("/email", emailRoute);
 
   app.use("*", (req, res) => {
-    res.json({ message: "No matching route found" });
+    res.json({ message: "This is REDASH API" });
   });
 };

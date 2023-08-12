@@ -3,6 +3,7 @@ import {
   createProduct,
   getAllProducts,
   getProductById,
+  searchProducts,
 } from "../data/products.js";
 
 const router = express.Router();
@@ -32,6 +33,16 @@ router.post("/", async (req, res) => {
     let body = req.body;
     const insertInfo = await createProduct(body);
     res.status(200).json(insertInfo);
+  } catch (error) {
+    res.status(error.status).json(error.message);
+  }
+});
+
+router.post("/search", async (req, res) => {
+  try {
+    let query = req.body.query;
+    const data = await searchProducts(query);
+    res.status(200).json(data);
   } catch (error) {
     res.status(error.status).json(error.message);
   }

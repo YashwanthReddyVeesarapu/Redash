@@ -36,3 +36,28 @@ export const getAllProducts = async (pagenum) => {
 
   return { total: total, pagenum: pagenum, results: results };
 };
+
+export const searchProducts = async (query) => {
+  try {
+    const productsCollection = await products();
+    let results = await productsCollection
+      .aggregate([
+        {
+          $search: {
+            index: "default",
+            text: {
+              query: query,
+              path: {
+                wildcard: "*",
+              },
+            },
+          },
+        },
+      ])
+      .toArray();
+    return { results: results };
+  } catch (error) {
+    console.log(error);
+    throw { message: "Server error", status: 500 };
+  }
+};

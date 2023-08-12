@@ -4,6 +4,7 @@ import Product from "../components/Product";
 import { useEffect } from "react";
 import { apiInstance } from "../utils/apiInstance";
 import { CircularProgress, LinearProgress } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 const ShopPage = ({ setOpen }) => {
   const [products, setProducts] = useState([]);
@@ -12,15 +13,29 @@ const ShopPage = ({ setOpen }) => {
 
   const [loading, setLoading] = useState(true);
 
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+
+  const param = queryParams.get("query");
+
   useEffect(() => {
-    apiInstance
-      .get(`/products/${pagenum}`)
-      .then((res) => {
+    setLoading(true);
+    if (param == null) {
+      apiInstance
+        .get(`/products/${pagenum}`)
+        .then((res) => {
+          setProducts(res.data.results);
+          setLoading(false);
+        })
+        .catch(() => setLoading(false));
+    } else {
+      apiInstance.post(`/products/search`, { query: param }).then((res) => {
         setProducts(res.data.results);
         setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+      });
+    }
+  }, [param]);
 
   if (loading)
     return (
