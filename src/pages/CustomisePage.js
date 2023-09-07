@@ -15,16 +15,18 @@ import {
   MenuItem,
   Select,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../redux/actions";
+import html2canvas from "html2canvas";
 
-const globalObject = [
-  {
-    colorName: "Red",
-    colorCode: "#b51717",
-    shirtImage: "",
-  },
-  { colorName: "Royal Blue", colorCode: "#20419A", shirtImage: "" },
-  { colorName: "Orange", colorCode: "#ff7700", shirtImage: "" },
-];
+const globalObject = {
+  white: "#fff",
+  black: "#000",
+  red: "#f00",
+  green: "#008000",
+  yellow: "#ff0",
+};
 
 const designSizes = {
   1: { x: 8.5, y: 11 },
@@ -41,6 +43,13 @@ const CustomisePage = () => {
   const [side, setSide] = useState("front");
   const [dimen, setDimen] = useState("");
   const [isbgRemoved, setIsBgRemoved] = useState(false);
+  const [clr, setClr] = useState("white");
+
+  const [resultUrl, setResultUrl] = useState();
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
   // const [canvas, setCanvas] = useState(null);
 
   // useEffect(() => {
@@ -48,6 +57,20 @@ const CustomisePage = () => {
   //     setCanvas(canvasEle);
   //   }
   // }, []);
+
+  function toDataURL(url, callback) {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function () {
+      var reader = new FileReader();
+      reader.onloadend = function () {
+        callback(reader.result);
+      };
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open("GET", url);
+    xhr.responseType = "blob";
+    xhr.send();
+  }
 
   useEffect(() => {
     let canvas = new fabric.Canvas(canvasEl.current);
@@ -67,6 +90,10 @@ const CustomisePage = () => {
     canvas.setWidth(dimen.x * (9.6 * 2));
     if (image) {
       let imageUrl = URL.createObjectURL(image);
+
+      toDataURL(imageUrl, function (dataUrl) {
+        setResultUrl(dataUrl);
+      });
 
       fabric.Image.fromURL(imageUrl, function (img) {
         // Define the image as background image of the Canvas
@@ -88,9 +115,28 @@ const CustomisePage = () => {
     setDimen(designSizes[dsize]);
   }, [dsize]);
 
-  const removeBg = async (img) => {
-    // const outputFile = `${__dirname}/out/img-removed-from-file.png`;
-    let API_KEY = "Rn1PbjhV5MbZvVahFJ7jfzoh";
+  const cart = async () => {
+    let canvasImg = canvasEl.current.toDataURL("image/png");
+    let img = await html2canvas(document.querySelector("#placer")).then(
+      (canvas) => {
+        let data = canvas.toDataURL("image/jpg");
+        return data;
+      }
+    );
+
+    const cartItem = {
+      _id: "RA0001",
+      name: "Custom",
+      quantity: "1",
+      color: clr,
+      price: "30",
+      size: "S",
+      brand: "REDASH",
+      img: img,
+      originalImg: resultUrl,
+    };
+
+    dispatch(addToCart(cartItem));
   };
 
   return (
@@ -119,23 +165,25 @@ const CustomisePage = () => {
 
             <Select
               id="shirt-color"
-              onChange={(e) =>
-                (document.getElementById("tshirt-div").style.backgroundColor =
-                  e.target.value)
-              }
+              onChange={(e) => {
+                console.log(e.target.value);
+                setClr(e.target.value);
+                document.getElementById("tshirt-div").style.backgroundColor =
+                  globalObject[e.target.value];
+              }}
               label="Color"
               labelId="shirt-color-label"
-              defaultValue={"#fff"}
+              defaultValue={"white"}
             >
-              <MenuItem value="#fff">White</MenuItem>
-              <MenuItem value="#000">Black</MenuItem>
-              <MenuItem value="#f00">Red</MenuItem>
-              <MenuItem value="#008000">Green</MenuItem>
-              <MenuItem value="#ff0">Yellow</MenuItem>
+              <MenuItem value="white">White</MenuItem>
+              <MenuItem value="black">Black</MenuItem>
+              <MenuItem value="red">Red</MenuItem>
+              <MenuItem value="green">Green</MenuItem>
+              <MenuItem value="yellow">Yellow</MenuItem>
             </Select>
           </FormControl>
         </div>
-        <div className="smiddle">
+        <div id="placer" className="smiddle">
           <div id="tshirt-div">
             <img id="tshirt-backgroundpicture" />
           </div>
@@ -164,7 +212,7 @@ const CustomisePage = () => {
           <Button
             disabled={isbgRemoved}
             variant={"contained"}
-            onClick={() => removeBg()}
+            onClick={() => cart()}
           >
             I am Done - Add to cart
           </Button>

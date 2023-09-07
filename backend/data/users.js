@@ -24,30 +24,40 @@ const getUserById = async (id) => {
 };
 
 export const createUser = async (userData) => {
-  const usersCollection = await users();
+  try {
+    const usersCollection = await users();
 
-  const userCheck = await getUserByEmail(userData.email);
-  if (userCheck != null) throw { status: 400, message: "Email already in use" };
+    const userCheck = await getUserByEmail(userData.email);
+    if (userCheck != null)
+      throw { status: 400, message: "Email already in use" };
 
-  const insertInfo = await usersCollection.insertOne({ ...userData });
+    const insertInfo = await usersCollection.insertOne({ ...userData });
 
-  if (!insertInfo.acknowledged || !insertInfo.insertedId)
-    throw { status: 400, message: "Could not add users" };
+    if (!insertInfo.acknowledged || !insertInfo.insertedId)
+      throw { status: 400, message: "Could not add users" };
 
-  return await getUserById(insertInfo.insertedId);
+    return await getUserById(insertInfo.insertedId);
+  } catch (error) {}
 };
 
 export const userLogin = async (userInput) => {
-  const { email, password } = userInput;
-  let validPassword;
-
   try {
-    const user = await getUserByEmail(email);
-    validPassword = await bcrypt.compare(password, user.password);
-  } catch (error) {
-    throw error;
-  }
+    const { email, password } = userInput;
+    let validPassword;
 
-  if (validPassword) return { status: 200, ...user };
-  else throw { status: 401, msg: "Error: Invalid Username or Password" };
+    try {
+      const user = await getUserByEmail(email);
+      validPassword = await bcrypt.compare(password, user.password);
+    } catch (error) {
+      throw error;
+    }
+
+    if (validPassword) return { status: 200, ...user };
+    else throw { status: 401, message: "Error: Invalid Username or Password" };
+  } catch (error) {
+    throw {
+      message: error.message ? error.message : "Server Error",
+      status: error.staus ? error.status : 500,
+    };
+  }
 };

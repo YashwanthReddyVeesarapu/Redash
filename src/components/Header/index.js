@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./styles.scss";
-import { Login, Person, Search, ShoppingCart } from "@mui/icons-material";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Login, Menu, Person, Search, ShoppingCart } from "@mui/icons-material";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Badge, IconButton, TextField, styled } from "@mui/material";
 import { useSelector } from "react-redux";
 import { getAuth } from "firebase/auth";
@@ -25,6 +25,7 @@ const Header = ({ page }) => {
   const query = params.get("query");
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     console.log(query);
@@ -61,38 +62,87 @@ const Header = ({ page }) => {
           </form>
         </div>
       )}
-
-      <div className="header-right">
-        {page == "home" && (
-          <div onClick={() => navigate("/")}>
-            <h2>Shop</h2>
-          </div>
-        )}
-
-        {page != "home" && (
-          <div onClick={() => navigate("/about")}>
-            <h2>About</h2>
-          </div>
-        )}
-
-        {auth.currentUser
-          ? page !== "profile" && (
-              <IconButton onClick={() => navigate("/profile")}>
-                <Person style={{ color: "white", fontSize: "30px" }} />
-              </IconButton>
-            )
-          : page !== "login" &&
-            page !== "loading" && (
-              <IconButton onClick={() => navigate("/login")}>
-                <Login style={{ color: "white" }} />
-              </IconButton>
-            )}
+      <div className="h-right">
         {page !== "prelaunch" && (
           <IconButton aria-label="cart" onClick={() => navigate("/cart")}>
             <StyledBadge badgeContent={cart.products.length} color="secondary">
               <ShoppingCart style={{ color: "white" }} />
             </StyledBadge>
           </IconButton>
+        )}
+
+        <div className="header-right">
+          {page == "home" && (
+            <div onClick={() => navigate("/")}>
+              <h2>Shop</h2>
+            </div>
+          )}
+
+          {page != "home" && (
+            <div onClick={() => navigate("/about")}>
+              <h2>About</h2>
+            </div>
+          )}
+
+          {auth.currentUser
+            ? page !== "profile" && (
+                <IconButton onClick={() => navigate("/profile")}>
+                  <Person style={{ color: "white", fontSize: "30px" }} />
+                </IconButton>
+              )
+            : page !== "login" &&
+              page !== "loading" && (
+                <IconButton onClick={() => navigate("/login")}>
+                  <Login style={{ color: "white" }} />
+                </IconButton>
+              )}
+        </div>
+      </div>
+
+      <div className="small-menu">
+        <IconButton
+          style={{ color: "white" }}
+          onClick={() => {
+            menuOpen ? setMenuOpen(false) : setMenuOpen(true);
+          }}
+        >
+          <Menu />
+        </IconButton>
+        {menuOpen && (
+          <nav>
+            <div className="small-search">
+              <form>
+                <input
+                  placeholder="Search"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                />
+                <IconButton onClick={() => handleSearch()}>
+                  <Search style={{ color: "white", fontSize: "30px" }} />
+                </IconButton>
+              </form>
+            </div>
+            {page == "home" && (
+              <div
+                onClick={() => {
+                  navigate("/about");
+                  setMenuOpen(false);
+                }}
+              >
+                <h2>About</h2>
+              </div>
+            )}
+            {page != "home" && (
+              <div
+                onClick={() => {
+                  navigate("/about");
+                  setMenuOpen(false);
+                }}
+              >
+                <h2>About</h2>
+              </div>
+            )}
+          </nav>
         )}
       </div>
     </header>

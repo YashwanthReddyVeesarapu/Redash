@@ -293,6 +293,8 @@ a {
     min-width: 300px;
     align-items: center;
     color: white;
+    animation: ease-in-out alternate 1s fadeIn;
+
     div {
       margin: 5px;
       width: 400px;
@@ -308,6 +310,7 @@ a {
 .order-details {
   align-items: center;
   width: 100%;
+  animation: ease-in-out alternate 1s fadeIn;
 
   .orders-container {
     display: flex;
@@ -334,6 +337,7 @@ a {
 .address-details {
   align-items: center;
   width: 100%;
+  animation: ease-in-out alternate 1s fadeIn;
 }
 
 @keyframes slidein {
@@ -345,6 +349,15 @@ a {
   to {
     width: 300px;
     opacity: 100;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 100%;
   }
 }
 

@@ -2,6 +2,7 @@ import express from "express";
 import "dotenv/config.js";
 
 import nodemailer from "nodemailer";
+import { sendEmail } from "../data/emails.js";
 
 const router = express.Router();
 
@@ -13,31 +14,17 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-router.post("/send", (req, res) => {
+router.post("/send", async (req, res) => {
   try {
     const { from, to, subject, html } = req.body;
 
-    let valid = ["REDASH <hello@redash.us>", "REDSOLS <hello@redsols.us>"];
-
-    if (valid.indexOf(from) < 0) {
-      throw { message: "Bad credentials", status: 400 };
-    }
-
-    const mailOptions = {
+    const result = await sendEmail({
       from: from,
       to: to,
       subject: subject,
       html: html,
-    };
-
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        res.status(500).send("Failed");
-      } else {
-        console.log("Email sent:", info.response);
-        res.status(200).send("Email sent successfully");
-      }
     });
+    res.status(result.status).message(result.message);
   } catch (error) {
     res.status(error.status).json(error.message);
   }

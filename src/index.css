@@ -8,6 +8,11 @@
   src: url(./assets/fonts/futura.ttf);
 }
 
+@font-face {
+  font-family: bcode;
+  src: url(./assets/fonts/BarcodeFont.ttf);
+}
+
 :root {
   --header-height: 50px;
   --footer-height: 50px;

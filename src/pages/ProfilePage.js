@@ -16,6 +16,7 @@ const ProfilePage = ({ setOpen }) => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [uid, setUid] = useState("");
 
   const [data, setData] = useState([]);
 
@@ -23,6 +24,7 @@ const ProfilePage = ({ setOpen }) => {
     if (auth.currentUser) {
       setName(auth.currentUser.displayName);
       setEmail(auth.currentUser.email);
+      setUid(auth.currentUser.uid);
 
       apiInstance
         .get(`/orders/${auth.currentUser.email}`)
@@ -32,8 +34,6 @@ const ProfilePage = ({ setOpen }) => {
         state: { severity: "error", message: "Login Required" },
       });
   }, []);
-
-  console.log(data);
 
   const handleLogout = () => {
     auth.signOut().then(() =>
@@ -78,6 +78,19 @@ const ProfilePage = ({ setOpen }) => {
             <h2>Account</h2>
             <TextField value={name} label={"Name"} placeholder="Full Name" />
             <TextField value={email} placeholder="Email" label="Email" />
+            <div>
+              <h3>Rewards Member</h3>
+              <p
+                style={{
+                  fontFamily: "bcode",
+                  fontSize: "80px",
+                  padding: 0,
+                  margin: 0,
+                }}
+              >
+                {uid}
+              </p>
+            </div>
             <Button onClick={() => handleLogout()}>Logout</Button>
           </div>
         )}
