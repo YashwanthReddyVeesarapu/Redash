@@ -79,8 +79,8 @@ const Header = ({ page }) => {
           )}
 
           {page != "home" && (
-            <div onClick={() => navigate("/about")}>
-              <h2>About</h2>
+            <div onClick={() => navigate("/custom")}>
+              <h2>Customize</h2>
             </div>
           )}
 
@@ -125,21 +125,21 @@ const Header = ({ page }) => {
             {page == "home" && (
               <div
                 onClick={() => {
-                  navigate("/about");
+                  navigate("/custom");
                   setMenuOpen(false);
                 }}
               >
-                <h2>About</h2>
+                <h2>Customize</h2>
               </div>
             )}
             {page != "home" && (
               <div
                 onClick={() => {
-                  navigate("/about");
+                  navigate("/");
                   setMenuOpen(false);
                 }}
               >
-                <h2>About</h2>
+                <h2>Shop</h2>
               </div>
             )}
           </nav>

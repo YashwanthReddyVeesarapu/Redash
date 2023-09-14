@@ -1,6 +1,5 @@
 {
   "mongoConfig": {
-    "serverUrl": "mongodb+srv://yash:v1WcD44Ym4Ijs5az@cluster0.gqrwztc.mongodb.net/?retryWrites=true&w=majority",
     "database": "redash-db"
   }
 }
