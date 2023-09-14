@@ -29,12 +29,12 @@ If you'd like to set up a local development environment for the Redash Us e-comm
 
 2. **Install Dependencies**
 
-# Install server dependencies
+Install server dependencies
 
-cd backend
+cd backend  
 npm install
 
-# Install client dependencies
+Install client dependencies
 
 npm install
 
