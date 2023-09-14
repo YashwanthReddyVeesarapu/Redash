@@ -1,6 +1,6 @@
 # Redash US
 
-![Redash Us Logo](android-chrome-512x512.png)
+![Redash US Logo](/public/android-chrome-512x512.png)
 
 Welcome to the Redash Us GitHub repository for our e-commerce store project. Redash Us is an online shopping platform that offers a curated selection of stylish and sustainable clothing. This repository serves as the central hub for all project-related assets and resources.
 
