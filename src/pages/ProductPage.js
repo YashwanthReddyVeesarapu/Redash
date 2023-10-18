@@ -3,18 +3,37 @@ import { apiInstance } from "../utils/apiInstance";
 import { useParams } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import {
+  Box,
   Button,
   CircularProgress,
   FormGroup,
+  IconButton,
   InputLabel,
   MenuItem,
+  Modal,
   Select,
+  Typography,
 } from "@mui/material";
+
+import chart from "./../assets/charts/3001.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../redux/actions";
 
 import "./styles.scss";
 import CustomButton from "../components/CustomButton";
+import { HelpOutline } from "@mui/icons-material";
+
+const style = {
+  position: "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const ProductPage = () => {
   const [product, setProduct] = useState();
@@ -23,6 +42,7 @@ const ProductPage = () => {
   const [clr, setClr] = useState("");
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
+  const [openChart, setOpenChart] = useState(false);
 
   const { productId } = useParams();
 
@@ -283,7 +303,17 @@ const ProductPage = () => {
             </div>
 
             <FormGroup className="p-size">
-              <InputLabel id="size-label">Size</InputLabel>
+              <InputLabel id="size-label">
+                Size
+                <IconButton
+                  style={{ margin: 0, padding: 0 }}
+                  onClick={() => setOpenChart(true)}
+                >
+                  <HelpOutline
+                    style={{ margin: 1, padding: 0, fontSize: "0.9em" }}
+                  />
+                </IconButton>
+              </InputLabel>
               <Select
                 id="size"
                 labelId="size-label"
@@ -325,6 +355,17 @@ const ProductPage = () => {
           </div>
         </div>
       )}
+
+      <Modal
+        open={openChart}
+        onClose={() => setOpenChart(false)}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <img src={chart} />
+        </Box>
+      </Modal>
     </MainLayout>
   );
 };

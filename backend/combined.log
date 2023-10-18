@@ -1,0 +1,6 @@
+{"level":"info","message":"GET / - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
+{"level":"info","message":"GET /favicon.ico - Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36"}
+{"level":"info","message":"GET / - [object Object]"}
+{"level":"info","message":"GET /favicon.ico - [object Object]"}
+{"level":"info","message":"GET /"}
+{"level":"info","message":"GET /favicon.ico"}

@@ -24,6 +24,7 @@ import PreLaunchPage from "./pages/PreLaunchPage";
 import { Alert, CircularProgress, Snackbar } from "@mui/material";
 import OrderPlacedPage from "./pages/OrderPlacedPage";
 import MainLayout from "./layouts/MainLayout";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   const [open, setOpen] = useState({});
@@ -81,6 +82,7 @@ function App() {
         />
 
         <Route path="/checkout" element={<CheckoutPage />} />
+        <Route exact path="*" element={<NotFoundPage />} />
       </Routes>
 
       <Snackbar
