@@ -191,7 +191,7 @@ a {
   justify-content: center;
 
   .img-container {
-    flex: 0.4;
+    flex: 1;
     padding: 10px;
     border-radius: 2em;
     height: 100%;
@@ -200,7 +200,7 @@ a {
 
   .product-details {
     display: flex;
-    flex: 0.4;
+    flex: 1;
     flex-direction: column;
     padding: 10px;
     margin: 10px;

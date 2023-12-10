@@ -4,7 +4,6 @@ import { useParams } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import {
   Box,
-  Button,
   CircularProgress,
   FormGroup,
   IconButton,
@@ -12,7 +11,6 @@ import {
   MenuItem,
   Modal,
   Select,
-  Typography,
 } from "@mui/material";
 
 import chart from "./../assets/charts/3001.svg";
@@ -57,20 +55,23 @@ const ProductPage = () => {
       setSize(res.data.sizes[0]);
       setLoading(false);
     });
-  }, []);
+    setQty(1);
+  }, [productId]);
 
   useEffect(() => {
     if (!product) return;
     setImage(product.images[`${clr}`]);
-  }, [clr]);
+  }, [clr, product]);
+
+  console.log(product);
 
   const isAlreadyInCart = () => {
     let cartProducts = cart.products;
     for (let i = 0; i < cartProducts.length; i++) {
       if (
-        cartProducts[i]._id == productId &&
-        cartProducts[i].color == clr &&
-        cartProducts[i].size == size
+        cartProducts[i]._id === productId &&
+        cartProducts[i].color === clr &&
+        cartProducts[i].size === size
       ) {
         return true;
       }
@@ -90,7 +91,7 @@ const ProductPage = () => {
         >
           <meta itemProp="sku" content={product._id} />
 
-          <img className="img-container" src={image} />
+          <img className="img-container" alt={product.name} src={image} />
           <meta
             itemProp="image"
             content={`https://api.redash.us/images/${product._id}`}
@@ -273,64 +274,90 @@ const ProductPage = () => {
             </FormGroup> */}
 
             <div className="productColours">
-              {product.colors.map((a, i) => {
-                if (a === "white")
-                  return (
-                    <div
-                      className={
-                        clr === a ? "colourChildActive" : "colourChild"
-                      }
-                      key={i}
-                      style={{ backgroundColor: "white" }}
-                      onClick={() => setClr("white")}
-                    />
-                  );
-                if (a === "black")
-                  return (
-                    <div
-                      className={
-                        clr === a ? "colourChildActive" : "colourChild"
-                      }
-                      key={i}
-                      style={{ backgroundColor: "black" }}
-                      onClick={() => setClr("black")}
-                    />
-                  );
+              {Array.isArray(product.colors) &&
+                product.colors.map((a, i) => {
+                  if (a === "white")
+                    return (
+                      <div
+                        className={
+                          clr === a ? "colourChildActive" : "colourChild"
+                        }
+                        key={i}
+                        style={{ backgroundColor: "white" }}
+                        onClick={() => setClr("white")}
+                      />
+                    );
+                  if (a === "black")
+                    return (
+                      <div
+                        className={
+                          clr === a ? "colourChildActive" : "colourChild"
+                        }
+                        key={i}
+                        style={{ backgroundColor: "black" }}
+                        onClick={() => setClr("black")}
+                      />
+                    );
 
-                if (a === "coffee brown")
-                  return (
-                    <div
-                      className={
-                        clr === a ? "colourChildActive" : "colourChild"
-                      }
-                      key={i}
-                      style={{ backgroundColor: "#914A37" }}
-                      onClick={() => setClr("coffee brown")}
-                    />
-                  );
-                if (a === "lavender")
-                  return (
-                    <div
-                      className={
-                        clr === a ? "colourChildActive" : "colourChild"
-                      }
-                      key={i}
-                      style={{ backgroundColor: "#E6E6FA" }}
-                      onClick={() => setClr("lavender")}
-                    />
-                  );
-                if (a === "light baby pink")
-                  return (
-                    <div
-                      className={
-                        clr === a ? "colourChildActive" : "colourChild"
-                      }
-                      key={i}
-                      style={{ backgroundColor: "#f4C2C2" }}
-                      onClick={() => setClr("light baby pink")}
-                    />
-                  );
-              })}
+                  if (a === "coffee brown")
+                    return (
+                      <div
+                        className={
+                          clr === a ? "colourChildActive" : "colourChild"
+                        }
+                        key={i}
+                        style={{ backgroundColor: "#914A37" }}
+                        onClick={() => setClr("coffee brown")}
+                      />
+                    );
+                  if (a === "lavender")
+                    return (
+                      <div
+                        className={
+                          clr === a ? "colourChildActive" : "colourChild"
+                        }
+                        key={i}
+                        style={{ backgroundColor: "#E6E6FA" }}
+                        onClick={() => setClr("lavender")}
+                      />
+                    );
+                  if (a === "light baby pink")
+                    return (
+                      <div
+                        className={
+                          clr === a ? "colourChildActive" : "colourChild"
+                        }
+                        key={i}
+                        style={{ backgroundColor: "#f4C2C2" }}
+                        onClick={() => setClr("light baby pink")}
+                      />
+                    );
+
+                  if (a === "red")
+                    return (
+                      <div
+                        className={
+                          clr === a ? "colourChildActive" : "colourChild"
+                        }
+                        key={i}
+                        style={{ backgroundColor: "red" }}
+                        onClick={() => setClr("red")}
+                      />
+                    );
+
+                  if (a === "green")
+                    return (
+                      <div
+                        className={
+                          clr === a ? "colourChildActive" : "colourChild"
+                        }
+                        key={i}
+                        style={{ backgroundColor: "green" }}
+                        onClick={() => setClr("green")}
+                      />
+                    );
+                  return "";
+                })}
             </div>
 
             <FormGroup className="p-size">
@@ -358,6 +385,10 @@ const ProductPage = () => {
                 ))}
               </Select>
             </FormGroup>
+
+            <br />
+
+            <br />
 
             <CustomButton
               style={{
@@ -394,7 +425,7 @@ const ProductPage = () => {
         aria-describedby="modal-modal-description"
       >
         <Box sx={style}>
-          <img src={chart} />
+          <img src={chart} alt="Size Chart" />
         </Box>
       </Modal>
     </MainLayout>
