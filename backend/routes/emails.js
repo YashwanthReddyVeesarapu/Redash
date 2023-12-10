@@ -6,14 +6,6 @@ import { sendEmail } from "../data/emails.js";
 
 const router = express.Router();
 
-const transporter = nodemailer.createTransport({
-  service: "Gmail", // e.g., 'Gmail'
-  auth: {
-    user: process.env.EMAIL,
-    pass: process.env.E_PASS,
-  },
-});
-
 router.post("/send", async (req, res) => {
   try {
     const { from, to, subject, html } = req.body;
@@ -24,9 +16,10 @@ router.post("/send", async (req, res) => {
       subject: subject,
       html: html,
     });
-    res.status(result.status).message(result.message);
+    res.status(result.status ? result.status : 200).json(result.message);
   } catch (error) {
-    res.status(error.status).json(error.message);
+    console.log(error);
+    res.status(error?.status ? error.status : 500).json(error.message);
   }
 });
 

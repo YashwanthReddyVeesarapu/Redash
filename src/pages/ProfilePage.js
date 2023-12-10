@@ -101,7 +101,9 @@ const ProfilePage = ({ setOpen }) => {
               {Array.isArray(data) && data.length > 0 ? (
                 data.map((o, i) => (
                   <div className="order" key={i}>
-                    #{o._id}
+                    <h3 style={{ padding: 0, margin: 0 }}>#{o._id}</h3>
+                    <br />
+                    Date: {Date(o.createdDate)}
                     {o.orderItems.map((element, i) => (
                       <div className="order-item" key={i}>
                         <h3>{element.name}</h3>
@@ -109,6 +111,8 @@ const ProfilePage = ({ setOpen }) => {
                       </div>
                     ))}
                     <h3>${o.total}</h3>
+                    <p>Tracking: {o.tracking}</p>
+                    <p>Status: {o.status}</p>
                   </div>
                 ))
               ) : (

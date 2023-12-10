@@ -5,6 +5,7 @@ import ordersRoute from "./orders.js";
 import imagesRoute from "./images.js";
 import convertRoute from "./convert.js";
 import emailRoute from "./emails.js";
+import blogsRoute from "./blogs.js";
 
 export const constructRoutes = (app) => {
   app.use("/users", usersRoute);
@@ -14,6 +15,7 @@ export const constructRoutes = (app) => {
   app.use("/images", imagesRoute);
   app.use("/convert", convertRoute);
   app.use("/email", emailRoute);
+  app.use("/blogs", blogsRoute);
 
   app.use("*", (req, res) => {
     res.json({ message: "This is REDASH API" });

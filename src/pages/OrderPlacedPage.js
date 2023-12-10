@@ -43,7 +43,7 @@ const OrderPlacedPage = ({ setOpen }) => {
         total: state?.paymentInfo?.amount / 100,
         email: auth?.currentUser?.email,
         tracking: "To be Assigned",
-        status: "To be Dispatched",
+        status: "Awaiting Confirmation",
         trackingLink: "",
       })
       .then((res) => {
@@ -67,7 +67,10 @@ const OrderPlacedPage = ({ setOpen }) => {
     <MainLayout setOpen={setOpen}>
       <h2>Order #{orderDetails._id}</h2>
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 700 }} aria-label="customized table">
+        <Table
+          sx={{ minWidth: 500, maxWidth: "90%" }}
+          aria-label="customized table"
+        >
           <TableBody>
             <TableRow>
               <TableCell component="th" scope="row">
@@ -102,7 +105,20 @@ const OrderPlacedPage = ({ setOpen }) => {
               <TableCell component="th" scope="row">
                 Shipping
               </TableCell>
-              <TableCell align="right">Address</TableCell>
+              <TableCell align="right">
+                <p>
+                  $
+                  {orderDetails.shipping.line1 +
+                    ", " +
+                    orderDetails.shipping.line2}
+                  <br />$
+                  {orderDetails.shipping.city +
+                    ", " +
+                    orderDetails.shipping.state +
+                    ", " +
+                    orderDetails.shipping.postal_code}
+                </p>
+              </TableCell>
             </TableRow>
           </TableBody>
         </Table>

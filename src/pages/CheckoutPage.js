@@ -100,6 +100,8 @@ export default function CheckoutPage() {
   const [message, setMessage] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState(null);
 
+  console.log(shippingAddress);
+
   const auth = getAuth();
 
   const [shp, setShp] = useState(false);
@@ -202,10 +204,10 @@ export default function CheckoutPage() {
   useEffect(() => {
     try {
       checkString(shippingAddress?.name);
-      checkString(shippingAddress?.line1);
-      checkString(shippingAddress?.city);
-      checkString(shippingAddress?.state);
-      checkString(shippingAddress?.postal_code);
+      checkString(shippingAddress?.address?.line1);
+      checkString(shippingAddress?.address?.city);
+      checkString(shippingAddress?.address?.state);
+      checkString(shippingAddress?.address?.postal_code);
 
       setShp(true);
     } catch (error) {}
@@ -272,15 +274,15 @@ export default function CheckoutPage() {
                   <h3>Shipping</h3>
                   <Typography gutterBottom>{checkout.shipping.name}</Typography>
                   <Typography gutterBottom>
-                    {checkout.shipping.line1}
+                    {checkout.shipping.address.line1}
                     {", "}
-                    {checkout.shipping.line2 && checkout.shipping.line2}
+                    {checkout.shipping.address.line2 && checkout.shipping.line2}
                     <br />
-                    {checkout.shipping.city}
+                    {checkout.shipping.address.city}
                     {", "}
-                    {checkout.shipping.state}
+                    {checkout.shipping.address.state}
                     {", "}
-                    {checkout.shipping.postal_code}
+                    {checkout.shipping.address.postal_code}
                   </Typography>
 
                   <sub>Free</sub>

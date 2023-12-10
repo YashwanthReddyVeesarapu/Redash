@@ -78,11 +78,11 @@ const Header = ({ page }) => {
             </div>
           )}
 
-          {page != "home" && (
+          {/* {page != "home" && (
             <div onClick={() => navigate("/custom")}>
               <h2>Customize</h2>
             </div>
-          )}
+          )} */}
 
           {auth.currentUser
             ? page !== "profile" && (

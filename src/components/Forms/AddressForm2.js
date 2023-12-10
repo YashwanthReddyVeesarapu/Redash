@@ -12,8 +12,7 @@ const AddressForm2 = ({ setShippingAddress }) => {
           if (e.complete) {
             setShippingAddress({
               name: e.value.name,
-
-              ...e.value.address,
+              address: e.value.address,
             });
           }
         }}

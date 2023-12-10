@@ -10,9 +10,13 @@ import {
   InputLabel,
   FormControl,
 } from "@mui/material";
+
 import { apiInstance } from "../utils/apiInstance";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers";
 
 const AdminPage = () => {
   const [images, setImages] = useState();
@@ -24,6 +28,10 @@ const AdminPage = () => {
   const [colors, setColors] = useState("");
   const [sizes, setSizes] = useState(["xs", "s", "m", "l", "xl"]);
   const [gender, setGender] = useState("female");
+
+  const [launchDate, setLaunchDate] = useState();
+
+  console.log(launchDate);
 
   const [loading, setLoading] = useState(true);
 
@@ -90,7 +98,8 @@ const AdminPage = () => {
 
   const createNewProduct = (e) => {
     e.preventDefault();
-    let { name, brand, price, about, type, material, fit } = e.target;
+    let { name, brand, price, about, type, material, fit, launchDate } =
+      e.target;
 
     const details = {
       model: name.value,
@@ -108,6 +117,7 @@ const AdminPage = () => {
       details: details,
       images: finalImages,
       gender: gender,
+      launch_date: launchDate,
     };
 
     apiInstance.post("/products", productData);
@@ -202,6 +212,12 @@ const AdminPage = () => {
           <Input name="type" placeholder="Type" />
           <Input name="material" placeholder="Material" />
           <Input name="fit" placeholder="Fit" />
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DatePicker
+              label="Launch Date"
+              onChange={(newValue) => setLaunchDate(newValue)}
+            />
+          </LocalizationProvider>
 
           <FormControl>
             <InputLabel id="gender-label">Gender</InputLabel>

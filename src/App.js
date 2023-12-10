@@ -25,7 +25,9 @@ import { Alert, CircularProgress, Snackbar } from "@mui/material";
 import OrderPlacedPage from "./pages/OrderPlacedPage";
 import MainLayout from "./layouts/MainLayout";
 import NotFoundPage from "./pages/NotFoundPage";
-
+import ContactPage from "./pages/ContactPage";
+import PrivacyPage from "./pages/PrivacyPage";
+import ReturnsPage from "./pages/ReturnsPage";
 function App() {
   const [open, setOpen] = useState({});
   const [loading, setLoading] = useState(true);
@@ -68,6 +70,9 @@ function App() {
         />
         <Route path="/login" element={<LoginPage setOpen={setOpen} />} />
         <Route path="/register" element={<RegisterPage setOpen={setOpen} />} />
+        <Route path="/contact" element={<ContactPage setOpen={setOpen} />} />
+        <Route path="/privacy" element={<PrivacyPage setOpen={setOpen} />} />
+        <Route path="/returns" element={<ReturnsPage setOpen={setOpen} />} />
 
         <Route path="/custom" element={<CustomisePage />} />
 

@@ -15,5 +15,6 @@ const getCollectionFn = (collection) => {
 const users = getCollectionFn("users");
 const products = getCollectionFn("products");
 const orders = getCollectionFn("orders");
+const blogs = getCollectionFn("blogs");
 
-export { users, products, orders };
+export { users, products, orders, blogs };

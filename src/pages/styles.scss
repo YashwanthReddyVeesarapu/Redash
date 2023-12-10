@@ -83,7 +83,7 @@ a {
 
 .shop-layout {
   display: flex;
-  color: black;
+  color: white;
   align-items: center;
   justify-content: center;
 
@@ -307,6 +307,21 @@ a {
   }
 }
 
+.privacy,
+.returns {
+  text-align: left;
+  width: 80%;
+  * {
+    margin: 0;
+  }
+  h2 {
+    margin: 10px 0px;
+  }
+  h3 {
+    margin: 5px 0;
+  }
+}
+
 .order-details {
   align-items: center;
   width: 100%;
@@ -320,7 +335,7 @@ a {
       background-color: white;
       color: black;
       margin: 20px;
-      height: 300px;
+      height: auto;
       width: 300px;
       border-radius: 2em;
       padding: 20px;

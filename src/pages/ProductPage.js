@@ -116,7 +116,7 @@ const ProductPage = () => {
                 content="https://schema.org/InStock"
               />
               <meta itemProp="price" content={product.price} />
-              <meta itemprop="priceValidUntil" content="2025-01-01" />
+              <meta itemProp="priceValidUntil" content="2024-01-01" />
               <meta itemProp="priceCurrency" content="USD" />
               <div
                 itemProp="eligibleRegion"
@@ -213,6 +213,37 @@ const ProductPage = () => {
                     content="https://schema.org/FreeReturn"
                   />
                 </div>
+              </div>
+            </div>
+
+            <div
+              itemProp="aggregateRating"
+              itemType="https://schema.org/AggregateRating"
+              itemScope
+            >
+              <meta itemProp="reviewCount" content="1" />
+              <meta itemProp="ratingValue" content="5" />
+            </div>
+
+            <div
+              itemProp="review"
+              itemType="https://schema.org/Review"
+              itemScope
+            >
+              <div
+                itemProp="author"
+                itemType="https://schema.org/Person"
+                itemScope
+              >
+                <meta itemProp="name" content="Yash" />
+              </div>
+              <div
+                itemProp="reviewRating"
+                itemType="https://schema.org/Rating"
+                itemScope
+              >
+                <meta itemProp="ratingValue" content="5" />
+                <meta itemProp="bestRating" content="5" />
               </div>
             </div>
 
