@@ -100,8 +100,6 @@ export default function CheckoutPage() {
   const [message, setMessage] = useState(null);
   const [paymentInfo, setPaymentInfo] = useState(null);
 
-  console.log(shippingAddress);
-
   const auth = getAuth();
 
   const [shp, setShp] = useState(false);

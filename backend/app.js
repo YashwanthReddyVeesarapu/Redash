@@ -9,7 +9,16 @@ const port = process.env.PORT || 4000;
 
 const app = express();
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      "https://cloud.redsols.us",
+      "https://www.redsols.us",
+      "https://blog.redsols.us",
+      "https://www.redash.us",
+    ],
+  })
+);
 
 app.use(bodyParser.json({ limit: "16mb" }));
 app.use(bodyParser.urlencoded({ extended: true, limit: "16mb" }));
@@ -168,16 +177,16 @@ async function detectChanges(url, venue) {
 app.listen(port, (e) => {
   console.log("Server started");
 
-  const minutes = 5;
-  const waitTime = 60000 * minutes;
-  const marqueeUrl =
-    "https://taogroup.com/wp-json/wp/v2/events?per_page=100&filter[meta_key]=end_epoch&filter[meta_value]=1697087581&filter[meta_compare]=%3E=&filter[orderby]=meta_value_num&order=asc&filter[order]=ASC&event_venue=90";
+  // const minutes = 5;
+  // const waitTime = 60000 * minutes;
+  // const marqueeUrl =
+  //   "https://taogroup.com/wp-json/wp/v2/events?per_page=100&filter[meta_key]=end_epoch&filter[meta_value]=1697087581&filter[meta_compare]=%3E=&filter[orderby]=meta_value_num&order=asc&filter[order]=ASC&event_venue=90";
 
-  const taoNYC =
-    "https://taogroup.com/wp-json/wp/v2/events?per_page=100&filter[meta_key]=end_epoch&filter[meta_value]=1698636421&filter[meta_compare]=%3E=&filter[orderby]=meta_value_num&order=asc&filter[order]=ASC&event_city=78&";
+  // const taoNYC =
+  //   "https://taogroup.com/wp-json/wp/v2/events?per_page=100&filter[meta_key]=end_epoch&filter[meta_value]=1698636421&filter[meta_compare]=%3E=&filter[orderby]=meta_value_num&order=asc&filter[order]=ASC&event_city=78&";
 
-  // detectChanges(marqueeUrl, "Marquee");
-  detectChanges(taoNYC, "TAO NYC");
+  // // detectChanges(marqueeUrl, "Marquee");
+  // detectChanges(taoNYC, "TAO NYC");
 
-  setInterval(() => detectChanges(taoNYC, "TAO NYC"), waitTime);
+  // setInterval(() => detectChanges(taoNYC, "TAO NYC"), waitTime);
 });

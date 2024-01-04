@@ -28,7 +28,6 @@ const Header = ({ page }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    console.log(query);
     if (query == null) setSearchTerm("");
     else setSearchTerm(query);
   }, [query]);

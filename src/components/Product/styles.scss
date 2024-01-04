@@ -42,32 +42,29 @@
 
 .product {
   background-color: black;
-  width: 22%;
-  margin: 19px;
+  width: 25vw;
   border-radius: 20px;
-  transition: all 0.5s ease-in-out;
-  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
   overflow: hidden;
+  height: "100%";
   transform: scale(0);
-  border: 1px solid white;
+  height: 350px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+  margin: 20px;
 }
 
 .product-next {
   background-color: black;
-  width: 100%;
-  margin: 19px;
+  width: 25vw;
   border-radius: 20px;
   transition: all 0.7s ease-in-out;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
   overflow: hidden;
   transform: scale(1);
-  min-width: 250px;
-  min-height: 350px;
-  border: 1px solid white;
+  margin: 20px;
 
   .thumb {
     display: flex;
-    height: 250px;
+    height: 100%;
     width: 100%;
     justify-content: center;
     align-items: center;
@@ -77,7 +74,7 @@
       margin: auto;
       display: block;
       width: 100%;
-      max-height: 250px;
+      max-height: "100%";
       object-fit: cover;
     }
   }
@@ -98,6 +95,8 @@
     width: 100%;
     margin: 0 auto;
     color: white;
+    position: absolute;
+    bottom: 20px;
 
     ul,
     ul li {
@@ -118,15 +117,20 @@
         }
 
         .name {
-          font-size: 1.2em;
-          line-height: 1.2;
+          font-size: 1.4em;
+          line-height: 1.5;
           font-weight: 400;
+          background-color: rgba(0, 0, 0, 0.8);
+          padding: 5px;
         }
 
         .price {
           font-size: 1.6rem;
-          line-height: 1;
+          line-height: 1.2;
           font-weight: 400;
+          background-color: rgba(0, 0, 0, 0.8);
+          padding: 5px;
+
           s {
             font-size: 10px;
           }
@@ -165,6 +169,17 @@
 
   .product-next {
     width: 95%;
+    margin: 5px;
+  }
+}
+
+@media only screen and (max-width: 400px) {
+  .product {
+    width: 90vw;
+  }
+
+  .product-next {
+    width: 90vw;
     margin: 5px;
   }
 }

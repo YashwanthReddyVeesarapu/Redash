@@ -46,7 +46,7 @@ function App() {
   if (loading)
     return (
       <MainLayout page={"loading"} setOpen={setOpen}>
-        <CircularProgress style={{ color: "white" }} />{" "}
+        <CircularProgress style={{ color: "white" }} />
       </MainLayout>
     );
   return (

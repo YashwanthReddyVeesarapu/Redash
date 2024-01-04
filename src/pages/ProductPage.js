@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { apiInstance } from "../utils/apiInstance";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import {
   Box,
@@ -37,10 +37,17 @@ const ProductPage = () => {
   const [product, setProduct] = useState();
   const [loading, setLoading] = useState(true);
   const [qty, setQty] = useState(1);
-  const [clr, setClr] = useState("");
   const [image, setImage] = useState("");
   const [size, setSize] = useState("");
   const [openChart, setOpenChart] = useState(false);
+
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const color = queryParams.get("color");
+
+  const navigate = useNavigate();
+
+  const [clr, setClr] = useState("");
 
   const { productId } = useParams();
 
@@ -50,20 +57,24 @@ const ProductPage = () => {
 
   useEffect(() => {
     apiInstance.get(`/products/product/${productId}`).then((res) => {
+      let availableColors = res.data.colors;
+      console.log(color);
+      if (color == null) {
+        setClr(availableColors[0]);
+        setImage(res.data.images[`${availableColors[0]}`]);
+      } else if (!availableColors.includes(color)) {
+        navigate(`/product/${productId}?color=${availableColors[0]}`);
+      } else {
+        setClr(color);
+        setImage(res.data.images[`${color}`]);
+      }
+
       setProduct(res.data);
-      setClr(res.data.colors[0]);
       setSize(res.data.sizes[0]);
       setLoading(false);
     });
     setQty(1);
-  }, [productId]);
-
-  useEffect(() => {
-    if (!product) return;
-    setImage(product.images[`${clr}`]);
-  }, [clr, product]);
-
-  console.log(product);
+  }, [productId, color]);
 
   const isAlreadyInCart = () => {
     let cartProducts = cart.products;
@@ -78,6 +89,11 @@ const ProductPage = () => {
     }
     return false;
   };
+
+  useEffect(() => {
+    if (!product) return;
+    setImage(product.images[clr]);
+  }, [clr]);
 
   return (
     <MainLayout>
@@ -94,7 +110,7 @@ const ProductPage = () => {
           <img className="img-container" alt={product.name} src={image} />
           <meta
             itemProp="image"
-            content={`https://api.redash.us/images/${product._id}`}
+            content={`https://api.redash.us/images/${product._id}?color=${clr}`}
           />
 
           <div className="product-details">
@@ -254,6 +270,21 @@ const ProductPage = () => {
               itemProp="brand"
               itemType="https://schema.org/Brand"
               content={product.brand}
+            />
+
+            <div
+              itemProp="audience"
+              itemType="https://schema.org/PeopleAudience"
+              itemScope
+            >
+              <meta itemProp="suggestedGender" content={product.gender} />
+              <meta itemProp="suggestedMinAge" content="13" />
+            </div>
+
+            <meta
+              itemProp="color"
+              itemType="https://schema.org/Color"
+              content={clr}
             />
 
             {/* <FormGroup>

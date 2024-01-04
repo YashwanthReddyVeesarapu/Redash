@@ -76,7 +76,7 @@ const Product = (product) => {
         <ul>
           <li>
             {imgsLoaded ? (
-              <h2 className="name">{name ? name : "N/A"}</h2>
+              <span className="name">{name ? name : "N/A"}</span>
             ) : (
               <Skeleton
                 style={{ marginLeft: "25%", marginRight: "25%" }}

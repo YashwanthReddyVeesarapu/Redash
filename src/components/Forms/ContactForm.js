@@ -5,9 +5,6 @@ import React, { useState } from "react";
 const ContactForm = ({ contactInfo, setContactInfo }) => {
   const [email, setEmail] = useState(contactInfo.email);
   const [phone, setPhone] = useState(contactInfo.phone);
-  
-
-  console.log(contactInfo);
 
   return (
     <form>

@@ -1,5 +1,5 @@
 import express from "express";
-import { getBlog, getBlogs } from "../data/blogs.js";
+import { createBlog, getBlog, getBlogs } from "../data/blogs.js";
 
 const router = express.Router();
 
@@ -18,7 +18,7 @@ router.get("/:title", async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  const data = await getBlog(req.params.title);
+  const data = await createBlog(req.body);
 
   res.status(200).json(data);
 });

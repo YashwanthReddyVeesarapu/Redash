@@ -31,8 +31,6 @@ const AdminPage = () => {
 
   const [launchDate, setLaunchDate] = useState();
 
-  console.log(launchDate);
-
   const [loading, setLoading] = useState(true);
 
   // onAuthStateChanged(auth, (user) => {

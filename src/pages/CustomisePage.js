@@ -166,7 +166,6 @@ const CustomisePage = () => {
             <Select
               id="shirt-color"
               onChange={(e) => {
-                console.log(e.target.value);
                 setClr(e.target.value);
                 document.getElementById("tshirt-div").style.backgroundColor =
                   globalObject[e.target.value];
