@@ -30,14 +30,14 @@ const cartReducer = (state = initialState, action) => {
 
     case "CHANGE_QTY":
       const newP = state.products.map((p, i) =>
-        p.id == payload.id ? { ...p, quantity: payload.quantity } : p
+        p.id === payload.id ? { ...p, quantity: payload.quantity } : p
       );
       return {
         products: newP,
         total: totalPrice(newP),
       };
     case "REMOVE_ITEM":
-      const newCartItems = state.products.filter((p) => p.id != payload);
+      const newCartItems = state.products.filter((p) => p.id !== payload);
       return {
         products: newCartItems,
         total: totalPrice(newCartItems),

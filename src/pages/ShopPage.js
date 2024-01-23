@@ -3,7 +3,7 @@ import MainLayout from "../layouts/MainLayout";
 import Product from "../components/Product";
 import { useEffect } from "react";
 import { apiInstance } from "../utils/apiInstance";
-import { CircularProgress, LinearProgress } from "@mui/material";
+import { CircularProgress } from "@mui/material";
 import { useLocation } from "react-router-dom";
 
 const ShopPage = ({ setOpen }) => {

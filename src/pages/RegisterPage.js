@@ -4,10 +4,9 @@ import { Alert, Button, Input, Snackbar } from "@mui/material";
 import {
   createUserWithEmailAndPassword,
   getAuth,
-  onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegisterPage = ({ setOpen }) => {
   const auth = getAuth();

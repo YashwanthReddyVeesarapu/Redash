@@ -1,6 +1,6 @@
 import React from "react";
 import MainLayout from "../layouts/MainLayout";
-import { Button, FormGroup, InputLabel, MenuItem, Select } from "@mui/material";
+import { Button } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { updateCheckoutDetails } from "../redux/actions";
 

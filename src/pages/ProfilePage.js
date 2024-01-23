@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MainLayout from "../layouts/MainLayout";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { Button, Grid, TextField } from "@mui/material";
+import { getAuth } from "firebase/auth";
+import { Button, TextField } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import "./styles.scss";

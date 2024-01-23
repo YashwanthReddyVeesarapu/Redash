@@ -1,18 +1,11 @@
-import {
-  Navigate,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-  useNavigation,
-} from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { onAuthStateChanged } from "firebase/auth";
 import { app, auth } from "./firebase/firebase";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CustomisePage from "./pages/CustomisePage";
 import ShopPage from "./pages/ShopPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -20,7 +13,6 @@ import AdminPage from "./pages/AdminPage";
 import ProductPage from "./pages/ProductPage";
 import CartPage from "./pages/CartPage";
 import CheckoutPage from "./pages/CheckoutPage";
-import PreLaunchPage from "./pages/PreLaunchPage";
 import { Alert, CircularProgress, Snackbar } from "@mui/material";
 import OrderPlacedPage from "./pages/OrderPlacedPage";
 import MainLayout from "./layouts/MainLayout";
@@ -96,7 +88,7 @@ function App() {
       </Routes>
 
       <Snackbar
-        open={open.severity !== null}
+        open={open.severity ? true : false}
         autoHideDuration={3000}
         onClose={handleClose}
       >

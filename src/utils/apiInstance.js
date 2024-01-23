@@ -2,7 +2,7 @@ import axios from "axios";
 
 let dev = false;
 if (window.location.hostname === "localhost") {
-  dev = false;
+  dev = true;
 }
 export const serverURI = dev
   ? "http://localhost:4000/"

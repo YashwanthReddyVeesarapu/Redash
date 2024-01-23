@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import MainLayout from "../layouts/MainLayout";
-import { Alert, Button, Input, Snackbar } from "@mui/material";
+import { Button, Input } from "@mui/material";
 import "./styles.scss";
 import {
   getAuth,

@@ -16,6 +16,7 @@ app.use(
       "https://www.redsols.us",
       "https://blog.redsols.us",
       "https://www.redash.us",
+      "http://localhost:3000",
     ],
   })
 );
