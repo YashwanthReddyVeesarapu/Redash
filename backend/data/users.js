@@ -28,7 +28,7 @@ export const createUser = async (userData) => {
     const usersCollection = await users();
 
     const userCheck = await getUserByEmail(userData.email);
-    if (userCheck != null)
+    if (userCheck !== null)
       throw { status: 400, message: "Email already in use" };
 
     const insertInfo = await usersCollection.insertOne({ ...userData });

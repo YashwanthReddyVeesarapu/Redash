@@ -181,7 +181,7 @@ const AdminPage = () => {
             colors.map((c, i) => (
               <div key={i}>
                 <label>{c}</label>
-                {finalImages[c] != undefined && (
+                {finalImages[c] !== undefined && (
                   <img height={"100px"} src={finalImages[c]} />
                 )}
                 <input

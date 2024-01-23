@@ -11,7 +11,7 @@ import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "./firebase/firebase";
+import { app, auth } from "./firebase/firebase";
 import { useEffect, useState } from "react";
 import CustomisePage from "./pages/CustomisePage";
 import ShopPage from "./pages/ShopPage";
@@ -28,6 +28,9 @@ import NotFoundPage from "./pages/NotFoundPage";
 import ContactPage from "./pages/ContactPage";
 import PrivacyPage from "./pages/PrivacyPage";
 import ReturnsPage from "./pages/ReturnsPage";
+
+import { getAnalytics } from "firebase/analytics";
+
 function App() {
   const [open, setOpen] = useState({});
   const [loading, setLoading] = useState(true);
@@ -35,6 +38,8 @@ function App() {
   onAuthStateChanged(auth, (user) => {
     setLoading(false);
   });
+
+  const analytics = getAnalytics(app);
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
@@ -91,7 +96,7 @@ function App() {
       </Routes>
 
       <Snackbar
-        open={open.severity != null}
+        open={open.severity !== null}
         autoHideDuration={3000}
         onClose={handleClose}
       >

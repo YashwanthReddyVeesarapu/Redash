@@ -177,8 +177,8 @@ async function detectChanges(url, venue) {
 app.listen(port, (e) => {
   console.log("Server started");
 
-  // const minutes = 5;
-  // const waitTime = 60000 * minutes;
+  const minutes = 20;
+  const waitTime = 60000 * minutes;
   // const marqueeUrl =
   //   "https://taogroup.com/wp-json/wp/v2/events?per_page=100&filter[meta_key]=end_epoch&filter[meta_value]=1697087581&filter[meta_compare]=%3E=&filter[orderby]=meta_value_num&order=asc&filter[order]=ASC&event_venue=90";
 
@@ -189,4 +189,8 @@ app.listen(port, (e) => {
   // detectChanges(taoNYC, "TAO NYC");
 
   // setInterval(() => detectChanges(taoNYC, "TAO NYC"), waitTime);
+
+  setInterval(async () => {
+    await fetch("https://redtodo-91a009c1eda0.herokuapp.com/");
+  }, waitTime);
 });
