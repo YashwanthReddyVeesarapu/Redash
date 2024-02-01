@@ -7,6 +7,8 @@ import { Navigate } from "react-router-dom";
 const AdminLayout = (props) => {
   const auth = getAuth();
 
+  if (auth.currentUser == null) return <Navigate to="/" />;
+
   if (auth?.currentUser?.email == "hello@redash.us")
     return (
       <>

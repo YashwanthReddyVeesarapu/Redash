@@ -50,7 +50,7 @@ router.post("/search", async (req, res) => {
 });
 
 router.delete("/:id", async (req, res) => {
-  const token = req.headers.authorization;
+  let token = req.headers.authorization;
   token = token.split(" ")[1];
   if (token !== process.env.TOKEN) {
     return res.status(401).json("Unauthorized");

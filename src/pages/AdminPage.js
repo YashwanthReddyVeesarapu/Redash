@@ -158,7 +158,7 @@ const AdminPage = () => {
     apiInstance
       .get(`/orders`, {
         headers: {
-          Authorization: `Bearer ${auth.currentUser.email}`,
+          Authorization: `Bearer ${auth.currentUser?.email}`,
         },
       })
       .then((res) => {
@@ -176,7 +176,7 @@ const AdminPage = () => {
       apiInstance
         .delete(`/products/${id}`, {
           headers: {
-            Authorization: `Bearer ${auth.currentUser.email}`,
+            Authorization: `Bearer ${auth.currentUser?.email}`,
           },
         })
         .then(() => {

@@ -11,7 +11,7 @@ router.get("/:email", async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  const token = req.headers.authorization;
+  let token = req.headers.authorization;
   token = token.split(" ")[1];
   if (token !== process.env.TOKEN) {
     return res.status(401).json("Unauthorized");
