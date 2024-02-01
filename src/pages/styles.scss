@@ -33,6 +33,61 @@ a {
 
 .admin {
   color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+
+  .tab {
+    display: flex;
+    flex: 0.3;
+    flex-direction: column;
+
+    .nav-item {
+      background-color: white;
+      border-radius: 2em;
+      color: black;
+      height: 50px;
+      width: 300px;
+      padding: 20px;
+      margin: 10px;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      font-size: 1.5em;
+      cursor: pointer;
+    }
+
+    .nav-item-active {
+      background-color: gray;
+      border-radius: 2em;
+      color: black;
+      height: 50px;
+      width: 300px;
+      padding: 20px;
+      margin: 10px;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      font-size: 1.5em;
+    }
+  }
+  .tab-content {
+    display: flex;
+    flex: 0.7;
+    flex-direction: column;
+
+    .products {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+  .modal-newp {
+    position: absolute;
+    background-color: black;
+    border: 1px solid white;
+  }
   label {
     color: white;
   }

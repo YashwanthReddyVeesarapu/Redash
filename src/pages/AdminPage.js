@@ -9,6 +9,7 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  CircularProgress,
 } from "@mui/material";
 
 import { apiInstance } from "../utils/apiInstance";
@@ -17,11 +18,18 @@ import { useNavigate } from "react-router-dom";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers";
+import Product from "../components/Product";
 
 const AdminPage = () => {
   const [images, setImages] = useState();
-  const [imagesUrlArray, setImagesUrlArray] = useState([]);
+  const [products, setAllProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [tab, setTab] = useState("orders");
+
   const auth = getAuth();
+
+  const [imagesUrlArray, setImagesUrlArray] = useState([]);
   const navigate = useNavigate();
 
   const [finalImages, setFinalImages] = useState({});
@@ -131,68 +139,180 @@ const AdminPage = () => {
     setImagesUrlArray(arr);
   }, [images]);
 
+  useEffect(() => {
+    if (auth.currentUser?.email !== "hello@redash.us") {
+      navigate("/");
+    }
+  }, [auth.currentUser]);
+
+  useEffect(() => {
+    if (tab !== "products") return;
+    apiInstance.get(`/products/${1}`).then((res) => {
+      setAllProducts(res.data.results);
+      setLoading(false);
+    });
+  }, [tab]);
+
+  useEffect(() => {
+    if (tab !== "orders") return;
+    apiInstance
+      .get(`/orders`, {
+        headers: {
+          Authorization: `Bearer ${auth.currentUser.email}`,
+        },
+      })
+      .then((res) => {
+        setOrders(res.data);
+        setLoading(false);
+      });
+  }, [tab]);
+
+  const editProduct = (id) => {
+    navigate(`/admin/edit/${id}`);
+  };
+
+  const deleteProduct = (id) => {
+    if (window.confirm("Are you sure you want to delete this product?"))
+      apiInstance
+        .delete(`/products/${id}`, {
+          headers: {
+            Authorization: `Bearer ${auth.currentUser.email}`,
+          },
+        })
+        .then(() => {
+          apiInstance.get(`/products/${1}`).then((res) => {
+            setAllProducts(res.data.results);
+            setLoading(false);
+          });
+        });
+  };
+
   return (
     <AdminLayout>
       <div className="admin">
-        <h2>Create New Product</h2>
-        <form onSubmit={createNewProduct} className="newProductForm">
-          <Input name="name" placeholder="Name" />
-          <Input name="brand" placeholder="Brand" />
-          <TextField
-            name="price"
-            placeholder="Price"
-            prefix="$"
-            variant="standard"
-          />
-          <FormControl>
-            <InputLabel id="sizes-label">Sizes</InputLabel>
-            <Select
-              labelId="sizes-label"
-              label="Sizes"
-              name="sizes"
-              placeholder="Sizes"
-              multiple
-              value={sizes}
-              onChange={(e) => setSizes(e.target.value)}
-            >
-              <MenuItem value="xs">XS</MenuItem>
-              <MenuItem value="s">S</MenuItem>
-              <MenuItem value="m">M</MenuItem>
-              <MenuItem value="l">L</MenuItem>
-              <MenuItem value="xl">XL</MenuItem>
-            </Select>
-          </FormControl>
+        <div className="tab">
+          <div
+            className={tab == "products" ? "nav-item-active" : "nav-item"}
+            onClick={() => setTab("products")}
+          >
+            Products
+          </div>
+          <div
+            className={tab == "orders" ? "nav-item-active" : "nav-item"}
+            onClick={() => setTab("orders")}
+          >
+            Orders
+          </div>
+        </div>
+        <div className="tab-content">
+          <Button onClick={() => setShowModal(true)}>Create New Product</Button>
+          {tab == "products" && (
+            <div className="products">
+              {loading ? (
+                <CircularProgress />
+              ) : Array.isArray(products) && products.length > 0 ? (
+                products.map((p, i) => (
+                  <div key={i}>
+                    <Product {...p} />
+                    <Button onClick={() => editProduct(p._id)}>Edit</Button>
+                    <Button onClick={() => deleteProduct(p._id)}>Delete</Button>
+                  </div>
+                ))
+              ) : (
+                <>
+                  <p>Something went wrong, Sorry for the inconvinence.</p>
+                  <p>This issue has been reported</p>
+                </>
+              )}
+            </div>
+          )}
 
-          <Input
-            onChange={(e) =>
-              setColors(
-                e.target.value.split(",").map(function (item) {
-                  return item.trim().toLowerCase();
-                })
-              )
-            }
-            name="colors"
-            placeholder="Colors"
-          />
+          {tab == "orders" && (
+            <div className="orders">
+              {loading ? (
+                <CircularProgress />
+              ) : Array.isArray(orders) && orders.length > 0 ? (
+                orders.map((o, i) => (
+                  <div className="order" key={i}>
+                    <h3 style={{ padding: 0, margin: 0 }}>#{o._id}</h3>
+                    <br />
+                    Date: {Date(o.createdDate)}
+                    <h3>${o.total}</h3>
+                    <p>Tracking: {o.tracking}</p>
+                    <p>Status: {o.status}</p>
+                  </div>
+                ))
+              ) : (
+                <>
+                  <p>Something went wrong, Sorry for the inconvinence.</p>
+                  <p>This issue has been reported</p>
+                </>
+              )}
+            </div>
+          )}
+        </div>
 
-          {/* Assigning images according to colors */}
+        {showModal && (
+          <div className="modal-newp">
+            <h2>Create New Product</h2>
+            <form onSubmit={createNewProduct} className="newProductForm">
+              <Input name="name" placeholder="Name" />
+              <Input name="brand" placeholder="Brand" />
+              <TextField
+                name="price"
+                placeholder="Price"
+                prefix="$"
+                variant="standard"
+              />
+              <FormControl>
+                <InputLabel id="sizes-label">Sizes</InputLabel>
+                <Select
+                  labelId="sizes-label"
+                  label="Sizes"
+                  name="sizes"
+                  placeholder="Sizes"
+                  multiple
+                  value={sizes}
+                  onChange={(e) => setSizes(e.target.value)}
+                >
+                  <MenuItem value="xs">XS</MenuItem>
+                  <MenuItem value="s">S</MenuItem>
+                  <MenuItem value="m">M</MenuItem>
+                  <MenuItem value="l">L</MenuItem>
+                  <MenuItem value="xl">XL</MenuItem>
+                </Select>
+              </FormControl>
 
-          {Array.isArray(colors) &&
-            colors.map((c, i) => (
-              <div key={i}>
-                <label>{c}</label>
-                {finalImages[c] !== undefined && (
-                  <img height={"100px"} src={finalImages[c]} />
-                )}
-                <input
-                  onChange={(e) => assignImage(c, e.target.files[0])}
-                  name={c}
-                  type="file"
-                />
-              </div>
-            ))}
+              <Input
+                onChange={(e) =>
+                  setColors(
+                    e.target.value.split(",").map(function (item) {
+                      return item.trim().toLowerCase();
+                    })
+                  )
+                }
+                name="colors"
+                placeholder="Colors"
+              />
 
-          {/* <ImageList
+              {/* Assigning images according to colors */}
+
+              {Array.isArray(colors) &&
+                colors.map((c, i) => (
+                  <div key={i}>
+                    <label>{c}</label>
+                    {finalImages[c] !== undefined && (
+                      <img height={"100px"} src={finalImages[c]} />
+                    )}
+                    <input
+                      onChange={(e) => assignImage(c, e.target.files[0])}
+                      name={c}
+                      type="file"
+                    />
+                  </div>
+                ))}
+
+              {/* <ImageList
             sx={{ height: "auto" }}
             variant="quilted"
             cols={2}
@@ -206,35 +326,38 @@ const AdminPage = () => {
               ))}
           </ImageList> */}
 
-          <Input name="about" placeholder="About" multiline rows={4} />
-          <Input name="type" placeholder="Type" />
-          <Input name="material" placeholder="Material" />
-          <Input name="fit" placeholder="Fit" />
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DatePicker
-              label="Launch Date"
-              onChange={(newValue) => setLaunchDate(newValue)}
-            />
-          </LocalizationProvider>
+              <Input name="about" placeholder="About" multiline rows={4} />
+              <Input name="type" placeholder="Type" />
+              <Input name="material" placeholder="Material" />
+              <Input name="fit" placeholder="Fit" />
+              <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <DatePicker
+                  label="Launch Date"
+                  onChange={(newValue) => setLaunchDate(newValue)}
+                />
+              </LocalizationProvider>
 
-          <FormControl>
-            <InputLabel id="gender-label">Gender</InputLabel>
-            <Select
-              labelId="gender-label"
-              label="Gender"
-              name="gender"
-              placeholder="Gender"
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-            >
-              <MenuItem value="male">Male</MenuItem>
-              <MenuItem value="female">Female</MenuItem>
-              <MenuItem value="unisex">Unisex</MenuItem>
-            </Select>
-          </FormControl>
+              <FormControl>
+                <InputLabel id="gender-label">Gender</InputLabel>
+                <Select
+                  labelId="gender-label"
+                  label="Gender"
+                  name="gender"
+                  placeholder="Gender"
+                  value={gender}
+                  onChange={(e) => setGender(e.target.value)}
+                >
+                  <MenuItem value="male">Male</MenuItem>
+                  <MenuItem value="female">Female</MenuItem>
+                  <MenuItem value="unisex">Unisex</MenuItem>
+                </Select>
+              </FormControl>
 
-          <Button type="submit">Create</Button>
-        </form>
+              <Button type="submit">Create</Button>
+            </form>
+            <Button onClick={() => setShowModal(false)}>Close</Button>
+          </div>
+        )}
       </div>
     </AdminLayout>
   );

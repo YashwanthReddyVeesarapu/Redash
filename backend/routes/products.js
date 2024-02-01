@@ -1,6 +1,7 @@
 import express from "express";
 import {
   createProduct,
+  deleteProduct,
   getAllProducts,
   getProductById,
   searchProducts,
@@ -45,6 +46,22 @@ router.post("/search", async (req, res) => {
     res.status(200).json(data);
   } catch (error) {
     res.status(error.status).json(error.message);
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  const token = req.headers.authorization;
+  token = token.split(" ")[1];
+  if (token !== process.env.TOKEN) {
+    return res.status(401).json("Unauthorized");
+  } else {
+    try {
+      let id = req.params.id;
+      const data = await deleteProduct(id);
+      res.status(200).json(data);
+    } catch (error) {
+      res.status(error.status).json(error.message);
+    }
   }
 });
 

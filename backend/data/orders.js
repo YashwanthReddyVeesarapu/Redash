@@ -27,6 +27,19 @@ export const createOrder = async (body) => {
   }
 };
 
+export const getAllOrders = async () => {
+  try {
+    const ordersCollection = await orders();
+    const result = await ordersCollection
+      .find({})
+      .sort({ createdDate: -1 })
+      .toArray();
+    return result;
+  } catch (error) {
+    throw { status: 500, message: "Server Error" };
+  }
+};
+
 export const getOrders = async (email) => {
   try {
     const ordersCollection = await orders();

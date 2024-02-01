@@ -73,3 +73,17 @@ export const searchProducts = async (query) => {
     throw { message: "Server error", status: 500 };
   }
 };
+
+export const deleteProduct = async (id) => {
+  try {
+    const productsCollection = await products();
+    const result = await productsCollection.deleteOne({
+      _id: new ObjectId(id),
+    });
+    if (!result.deletedCount)
+      throw { status: 400, message: "Could not delete" };
+    return { message: "Product deleted" };
+  } catch (error) {
+    throw { message: "Server error", status: 500 };
+  }
+};
