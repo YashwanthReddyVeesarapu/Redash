@@ -126,7 +126,12 @@ const AdminPage = () => {
       launch_date: launchDate,
     };
 
-    apiInstance.post("/products", productData);
+    apiInstance.post("/products", productData).then((res) => {
+      if (res.status == 200) {
+        alert("Poduct added successfully");
+        setShowModal(false);
+      }
+    });
   };
 
   useEffect(() => {
@@ -235,7 +240,6 @@ const AdminPage = () => {
                 orders.map((o, i) => (
                   <div className="order" key={i}>
                     <h3 style={{ padding: 0, margin: 0 }}>#{o._id}</h3>
-                    <br />
                     Date: {Date(o.createdDate)}
                     <h3>${o.total}</h3>
                     <p>Tracking: {o.tracking}</p>

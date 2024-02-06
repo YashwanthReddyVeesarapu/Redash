@@ -85,6 +85,7 @@ a {
   }
   .modal-newp {
     position: absolute;
+    top: 0;
     background-color: black;
     border: 1px solid white;
   }
@@ -231,6 +232,16 @@ a {
     100% {
       top: 110%;
     }
+  }
+}
+
+.order-details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  table {
+    width: fit-content;
   }
 }
 

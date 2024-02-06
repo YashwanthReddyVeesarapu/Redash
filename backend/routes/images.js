@@ -14,6 +14,8 @@ router.get("/:id", async (req, res) => {
       _id: new ObjectId(req.params.id),
     });
 
+    if (!product) throw { status: 404, message: "Product not found" };
+
     let imgIndex;
     if (color) {
       const keys = Object.keys(product.images);
@@ -35,7 +37,7 @@ router.get("/:id", async (req, res) => {
     });
     res.end(img);
   } catch (error) {
-    res.status(error.staus).json(error.message);
+    res.status(error.status ? error.status : 400).json(error.message);
   }
 });
 

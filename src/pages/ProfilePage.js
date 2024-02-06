@@ -102,8 +102,8 @@ const ProfilePage = ({ setOpen }) => {
                 data.map((o, i) => (
                   <div className="order" key={i}>
                     <h3 style={{ padding: 0, margin: 0 }}>#{o._id}</h3>
-                    <br />
-                    Date: {Date(o.createdDate)}
+                    {/* <br />
+                    Date: {Date(o.createdDate)} */}
                     {o.orderItems.map((element, i) => (
                       <div className="order-item" key={i}>
                         <h3>{element.name}</h3>

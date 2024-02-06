@@ -65,8 +65,9 @@ const OrderPlacedPage = ({ setOpen }) => {
 
   return (
     <MainLayout setOpen={setOpen}>
+      <h1>Order Confirmation</h1>
       <h2>Order #{orderDetails._id}</h2>
-      <TableContainer component={Paper}>
+      <TableContainer className="order-details" component={Paper}>
         <Table
           sx={{ minWidth: 500, maxWidth: "90%" }}
           aria-label="customized table"
@@ -107,16 +108,25 @@ const OrderPlacedPage = ({ setOpen }) => {
               </TableCell>
               <TableCell align="right">
                 <p>
-                  $
-                  {orderDetails.shipping.line1 +
+                  {(orderDetails.shipping.address?.line1
+                    ? orderDetails.shipping.address.line1
+                    : "") +
                     ", " +
-                    orderDetails.shipping.line2}
-                  <br />$
-                  {orderDetails.shipping.city +
+                    (orderDetails.shipping.address?.line2
+                      ? orderDetails.shipping.address.line2
+                      : "")}
+                  <br />
+                  {(orderDetails.shipping.address?.city
+                    ? orderDetails?.shipping?.address?.city
+                    : "") +
                     ", " +
-                    orderDetails.shipping.state +
+                    (orderDetails.shipping.address?.state
+                      ? orderDetails.shipping.address?.state
+                      : "") +
                     ", " +
-                    orderDetails.shipping.postal_code}
+                    (orderDetails.shipping.address?.postal_code
+                      ? orderDetails.shipping.address?.postal_code
+                      : "")}
                 </p>
               </TableCell>
             </TableRow>

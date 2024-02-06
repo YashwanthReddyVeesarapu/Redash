@@ -123,7 +123,7 @@ const ProductPage = () => {
               itemType="https://schema.org/Offer"
               itemScope
             >
-              <link itemProp="url" href={window.location.href} />
+              <meta itemProp="url" content={window.location.href} />
               <meta
                 itemProp="itemCondition"
                 content="https://schema.org/NewCondition"
@@ -133,7 +133,7 @@ const ProductPage = () => {
                 content="https://schema.org/InStock"
               />
               <meta itemProp="price" content={product.price} />
-              <meta itemProp="priceValidUntil" content="2024-01-01" />
+              <meta itemProp="priceValidUntil" content="2025-01-01" />
               <meta itemProp="priceCurrency" content="USD" />
               <div
                 itemProp="eligibleRegion"
@@ -373,6 +373,17 @@ const ProductPage = () => {
                         key={i}
                         style={{ backgroundColor: "red" }}
                         onClick={() => setClr("red")}
+                      />
+                    );
+                  if (a === "army")
+                    return (
+                      <div
+                        className={
+                          clr === a ? "colourChildActive" : "colourChild"
+                        }
+                        key={i}
+                        style={{ backgroundColor: "rgb(95, 88, 73)" }}
+                        onClick={() => setClr("army")}
                       />
                     );
 
