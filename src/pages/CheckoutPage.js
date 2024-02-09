@@ -18,12 +18,10 @@ import CheckoutForm from "../components/Forms/CheckoutForm";
 import { useDispatch, useSelector } from "react-redux";
 
 import MainLayout from "../layouts/MainLayout";
-import Review from "../components/Review";
 
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import Grid from "@mui/material/Grid";
 
 import "./styles.scss";
 import AddressForm2 from "../components/Forms/AddressForm2";
